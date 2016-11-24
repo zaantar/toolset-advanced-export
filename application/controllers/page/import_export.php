@@ -13,7 +13,6 @@ abstract class Page_Import_Export {
 
 	protected static $instance;
 
-	protected function __construct() { }
 
 	/**
 	 * @return Page_Import_Export
@@ -29,19 +28,76 @@ abstract class Page_Import_Export {
 	final private function __clone() { }
 
 
-	public static function render() {
+	protected function __construct() { }
 
-		$instance = static::get_instance();
-		$instance->render_page();
+
+	public static function initialize() {
 
 	}
 
 
-	protected function render_page() {
+	/**
+	 * Render the page's markup.
+	 */
+	public function render() {
+
+		$context = $this->build_twig_context();
+
+		$twig = $this->get_twig_environment();
+
+		$output = $twig->render( 'import_export.twig', $context );
+
+		echo $output;
+	}
 
 
+	/**
+	 * Get the Twig context for the page.
+	 *
+	 * @return array
+	 */
+	protected function build_twig_context() {
 
-		echo 'rendered d\'oh!';
+		$context = [
+			'strings' => [
+				'title' => 'rendered d\'oh!'
+			]
+		];
+
+		return $context;
+	}
+
+
+	/**
+	 * Get a configured Twig environment.
+	 *
+	 * @return \Twig_Environment
+	 */
+	protected function get_twig_environment() {
+
+		static $twig;
+
+		if( null == $twig ) {
+
+			// If there is no Twig instance loaded yet, use the one packed with the plugin.
+			if ( ! class_exists( '\Twig_Environment' ) ) {
+				Customized_Twig_Autoloader::register( false );
+			}
+
+			$loader = new \Twig_Loader_Filesystem();
+			$loader->addPath( TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/views/' );
+
+			$twig = new \Twig_Environment( $loader );
+
+			// Twig extensions
+			//
+			//
+			$twig->addFunction( '__', new \Twig_SimpleFunction( '__', function( $text, $domain = 'types' ) {
+				return __( $text, $domain );
+			} ) );
+		}
+
+		return $twig;
 	}
 
 
