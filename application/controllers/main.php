@@ -13,6 +13,10 @@ final class Main {
 	}
 
 
+	// Slug of the admin menu item
+	const MENU_SLUG = 'toolset-extra-export';
+
+
 	private function __construct() {
 
 		// Register autoloaded classes.
@@ -45,6 +49,20 @@ final class Main {
 		add_filter( 'is_toolset_extra_export_available', '__return_true' );
 
 		add_action( 'init', array( $this, 'on_init' ) );
+
+		add_action( 'admin_menu', function() {
+			add_submenu_page(
+				'tools.php',
+				__( 'Toolset Extra Export', 'toolset-ee' ),
+				__( 'Toolset Extra Export', 'toolset-ee' ),
+				'manage_options',
+				// Not referencing the page controller class directly so its file is loaded only when we actually need it
+				self::MENU_SLUG,
+				array( '\ToolsetExtraExport\Page_Tools', 'render' )
+			);
+		} );
+
+		// TODO also hook into toolset_filter_register_export_import_section for adding the menu there
 	}
 
 
