@@ -62,7 +62,8 @@ final class Main {
 			);
 		} );
 
-		// TODO also hook into toolset_filter_register_export_import_section for adding the menu there
+		// TODO also hook into toolset_filter_register_export_import_section for adding the menu there.
+		// TODO also consider hooking into register_importer in some way
 	}
 
 
