@@ -20,4 +20,4 @@ define( 'TOOLSET_EXTRA_EXPORT_ABSPATH', dirname( __FILE__ ) );
 
 // kickstart the plugin
 require_once TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/controllers/main.php';
-Toolset_Ee_Main::initialize();
+\ToolsetExtraExport\Main::initialize();

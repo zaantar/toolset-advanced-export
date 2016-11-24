@@ -1,6 +1,8 @@
 <?php
 
-final class Toolset_Ee_Main {
+namespace ToolsetExtraExport;
+
+final class Main {
 
 	private static $instance;
 
@@ -12,7 +14,7 @@ final class Toolset_Ee_Main {
 
 
 	private function __construct() {
-		add_action( 'after_setup_theme', array( $this, 'register_autoloaded_classes' ), 10 );
+		add_action( 'after_setup_theme', array( $this, 'register_autoloaded_classes' ), 11 );
 
 		add_filter( 'is_toolset_extra_export_available', '__return_true' );
 
@@ -43,15 +45,15 @@ final class Toolset_Ee_Main {
 		} else {
 			// Fallback to a standalone autoloader
 			require_once TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/autoloader.php';
-			Toolset_Ee_Autoloader::initialize();
-			$autoloader = Toolset_Ee_Autoloader::get_instance();
+			Autoloader::initialize();
+			$autoloader = Autoloader::get_instance();
 			$autoloader->register_classmap( $classmap );
 		}
 	}
 
 
 	public function on_init() {
-		Toolset_Ee_Api::initialize();
+		Api::initialize();
 	}
 
 }

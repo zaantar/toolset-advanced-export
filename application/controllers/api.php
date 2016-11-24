@@ -1,24 +1,26 @@
 <?php
 
+namespace ToolsetExtraExport;
+
 /**
  * Public hook API.
  *
  * This should be the only point where other plugins (incl. Toolset) interact with Toolset Extra Export directly.
  *
- * Note: Toolset_Ee_Api is initialized on init with priority 10.
+ * Note: The API is initialized on init with priority 10.
  *
  * When implementing filter hooks, please follow these rules:
  *
  * 1.  All filter names are automatically prefixed with 'toolset_'. Only lowercase characters and underscores
  *     can be used.
  * 2.  Filter names (without a prefix) should be defined in self::$callbacks.
- * 3.  For each filter, there should be a dedicated class implementing the Toolset_Ee_Api_Handler_Interface. Name of the class
- *     must be Toolset_Ee_Api_Handler_{$capitalized_filter_name}. So for example, for a hook to
- *     'toolset_import_from_zip_file' you need to create a class 'Toolset_Ee_Api_Handler_Import_From_Zip_File'.
+ * 3.  For each filter, there should be a dedicated class implementing the \ToolsetExtraExport\Api_Handler_Interface. Name of the class
+ *     must be \ToolsetExtraExport\Api_Handler_{$capitalized_filter_name}. So for example, for a hook to
+ *     'toolset_import_from_zip_file' you need to create a class '\ToolsetExtraExport\Api_Handler_Import_From_Zip_File'.
  *
  * @since 2.2
  */
-final class Toolset_Ee_Api {
+final class Api {
 
 	private static $instance;
 
@@ -46,7 +48,7 @@ final class Toolset_Ee_Api {
 	const CALLBACK_PREFIX = 'callback_';
 
 	/** Prefix for the handler class name */
-	const HANDLER_CLASS_PREFIX = 'Toolset_Ee_Api_Handler_';
+	const HANDLER_CLASS_PREFIX = '\ToolsetExtraExport\Api_Handler_';
 
 	const HOOK_PREFIX = 'toolset_';
 
@@ -113,9 +115,9 @@ final class Toolset_Ee_Api {
 
 		// Obtain an instance of the handler class.
 		try {
-			/** @var Toolset_Ee_Api_Handler_Interface $handler */
+			/** @var \ToolsetExtraExport\Api_Handler_Interface $handler */
 			$handler = new $class_name();
-		} catch( Exception $e ) {
+		} catch( \Exception $e ) {
 			// The handler class could not have been instantiated, resign.
 			return $default_return_value;
 		}

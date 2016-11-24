@@ -1,5 +1,6 @@
 <?php
 
+namespace ToolsetExtraExport;
 /**
  * Toolset Extra Export autoloader class.
  *
@@ -7,7 +8,7 @@
  *
  * @since 1.0
  */
-final class Toolset_Ee_Autoloader {
+final class Autoloader {
 
 	private static $instance;
 
@@ -67,13 +68,13 @@ final class Toolset_Ee_Autoloader {
 	 * The one who is adding mappings is responsible for existence of the files.
 	 *
 	 * @param string[string] $classmap class name => absolute path to a file where this class is defined
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @since m2m
 	 */
 	public function register_classmap( $classmap ) {
 
 		if( ! is_array( $classmap ) ) {
-			throw new InvalidArgumentException( 'The classmap must be an array.' );
+			throw new \InvalidArgumentException( 'The classmap must be an array.' );
 		}
 
 		$this->classmap = array_merge( $this->classmap, $classmap );
