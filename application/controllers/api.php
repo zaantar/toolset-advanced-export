@@ -77,7 +77,7 @@ final class Api {
 
 		foreach( self::$callbacks as $callback_name => $args ) {
 
-			$argument_count = wpcf_getarr( $args, 'args', 1 );
+			$argument_count = toolset_getarr( $args, 'args', 1 );
 
 			add_filter( self::HOOK_PREFIX . $callback_name, array( $this, self::CALLBACK_PREFIX . $callback_name ), 10, $argument_count );
 		}
@@ -97,7 +97,7 @@ final class Api {
 	 */
 	public function __call( $name, $parameters ) {
 
-		$default_return_value = wpcf_getarr( $parameters, 0, null );
+		$default_return_value = toolset_getarr( $parameters, 0, null );
 
 		// Check for the callback prefix in the method name
 		$name_parts = explode( self::DELIMITER, $name );
