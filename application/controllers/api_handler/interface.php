@@ -1,6 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\ApiHandlers;
+
+use ToolsetExtraExport;
+
 
 /**
  * Interface for handlers of hook API calls.

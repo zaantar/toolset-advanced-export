@@ -1,6 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\ApiHandlers;
+
+use ToolsetExtraExport;
 
 /**
  * Handler for the toolset_export_extra_wordpress_data_raw filter hook.
@@ -14,7 +16,7 @@ namespace ToolsetExtraExport;
  *
  * @since 1.0
  */
-class Api_Handler_Export_Extra_Wordpress_Data_Raw implements Api_Handler_Interface {
+class Export_Extra_Wordpress_Data_Raw implements Api_Handler_Interface {
 
 	public function __construct() { }
 
