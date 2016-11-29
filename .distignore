@@ -3,6 +3,7 @@
 # plugin things
 .distignore
 docs
+phpunit.xml
 tests
 
 # git things
@@ -13,6 +14,13 @@ tests
 composer.json
 composer.lock
 vendor/composer
+vendor/autoload.php
+
+# wp_mock
+vendor/10up
+vendor/antecendent
+vendor/hamcrest
+vendor/mockery
 
 # shave of some weight off Twig
 vendor/twig/doc

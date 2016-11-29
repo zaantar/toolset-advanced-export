@@ -28,13 +28,16 @@ final class Main {
 	private function __construct() {
 
 
+		require_once TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/functions.php';
+
+
 		// Register autoloaded classes.
 		//
 		// If toolset-common is available, use its autoloader to improve performance. Otherwise we'll register
 	    // our own.
 		//
 		// Priority is set to 11 because Toolset Common is initialized at 10.
-		add_action( 'after_setup_theme', function() {
+		\add_action( 'after_setup_theme', function() {
 
 			// It is possible to regenerate the classmap with Zend framework, for example:
 			//
@@ -42,9 +45,9 @@ final class Main {
 			// /srv/www/ZendFramework-2.4.9/bin/classmap_generator.php --overwrite
 			$classmap = include( TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/autoload_classmap.php' );
 
-			if( apply_filters( 'toolset_is_toolset_common_available', false ) ) {
+			if( \apply_filters( 'toolset_is_toolset_common_available', false ) ) {
 				// Use Toolset_Common_Autoloader to improve performace
-				do_action( 'toolset_register_classmap', $classmap );
+				\do_action( 'toolset_register_classmap', $classmap );
 			} else {
 				// Fallback to a standalone autoloader
 				require_once TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/autoloader.php';
@@ -59,7 +62,7 @@ final class Main {
 		// On every request, we only need to initialize the filter hook API.
 		//
 		//
-		add_action( 'init', function() {
+		\add_action( 'init', function() {
 			Api::initialize();
 		} );
 
@@ -67,16 +70,16 @@ final class Main {
 		// Indicate that the API is available
 		//
 		//
-		add_filter( 'is_toolset_extra_export_available', '__return_true' );
+		\add_filter( 'is_toolset_extra_export_available', '__return_true' );
 
 
 
 		// Add a standalone (sub)menu item under Tools
 		//
 		//
-		add_action( 'admin_menu', function() {
+		\add_action( 'admin_menu', function() {
 
-			$import_export_page_hook = add_submenu_page(
+			$import_export_page_hook = \add_submenu_page(
 				'tools.php',
 				__( 'Toolset Extra Export', 'toolset-ee' ),
 				__( 'Toolset Extra Export', 'toolset-ee' ),
@@ -89,7 +92,7 @@ final class Main {
 				}
 			);
 
-			add_action( 'admin_enqueue_scripts', function( $hook ) use( $import_export_page_hook ) {
+			\add_action( 'admin_enqueue_scripts', function( $hook ) use( $import_export_page_hook ) {
 				if( $import_export_page_hook == $hook ) {
 					Page_Tools::initialize();
 				}
