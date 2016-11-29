@@ -7,7 +7,7 @@ namespace ToolsetExtraExport;
  *
  * It can be used on a standalone page or in the Toolset Import/Export menu.
  *
- * @package ToolsetExtraExport
+ * @since 1.0
  */
 abstract class Page_Import_Export {
 

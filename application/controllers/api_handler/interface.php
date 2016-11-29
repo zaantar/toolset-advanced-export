@@ -4,6 +4,8 @@ namespace ToolsetExtraExport;
 
 /**
  * Interface for handlers of hook API calls.
+ *
+ * @since 1.0
  */
 interface Api_Handler_Interface {
 

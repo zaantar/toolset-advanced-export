@@ -28,7 +28,7 @@ namespace ToolsetExtraExport;
  * The original author of this class:
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @since 2.2
+ * @since 1.0
  */
 class Customized_Twig_Autoloader {
 

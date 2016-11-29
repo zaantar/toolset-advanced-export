@@ -2,6 +2,14 @@
 
 namespace ToolsetExtraExport;
 
+/**
+ * Main plugin controller.
+ *
+ * Note that this is loaded very early but other classes become available only at after_setup_theme:11 because
+ * of the autoloader.
+ *
+ * @since 1.0
+ */
 final class Main {
 
 	private static $instance;
@@ -18,6 +26,7 @@ final class Main {
 
 
 	private function __construct() {
+
 
 		// Register autoloaded classes.
 		//
@@ -46,10 +55,25 @@ final class Main {
 
 		}, 11 );
 
+
+		// On every request, we only need to initialize the filter hook API.
+		//
+		//
+		add_action( 'init', function() {
+			Api::initialize();
+		} );
+
+
+		// Indicate that the API is available
+		//
+		//
 		add_filter( 'is_toolset_extra_export_available', '__return_true' );
 
-		add_action( 'init', array( $this, 'on_init' ) );
 
+
+		// Add a standalone (sub)menu item under Tools
+		//
+		//
 		add_action( 'admin_menu', function() {
 
 			$import_export_page_hook = add_submenu_page(
@@ -79,10 +103,5 @@ final class Main {
 
 
 	private function __clone() { }
-
-
-	public function on_init() {
-		Api::initialize();
-	}
 
 }

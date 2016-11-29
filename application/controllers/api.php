@@ -18,7 +18,7 @@ namespace ToolsetExtraExport;
  *     must be \ToolsetExtraExport\Api_Handler_{$capitalized_filter_name}. So for example, for a hook to
  *     'toolset_import_from_zip_file' you need to create a class '\ToolsetExtraExport\Api_Handler_Import_From_Zip_File'.
  *
- * @since 2.2
+ * @since 1.0
  */
 final class Api {
 
@@ -62,10 +62,11 @@ final class Api {
 	 * @var array Filter names (without prefix) as keys, filter parameters as values:
 	 *     - int $args: Number of arguments of the filter
 	 */
-	private static $callbacks = array(
+	private static $callbacks = [
 
+		'export_extra_wordpress_data_raw' => [ 'args' => 2 ]
 
-	);
+	];
 
 
 	private function register_callbacks() {
