@@ -2,7 +2,7 @@
 
 namespace ToolsetExtraExport\ApiHandlers;
 
-use ToolsetExtraExport;
+use ToolsetExtraExport as e;
 
 /**
  * Handler for the toolset_export_extra_wordpress_data_raw filter hook.
@@ -11,8 +11,9 @@ use ToolsetExtraExport;
  * It is recommended to use or create a more specific, dedicated API hook instead of this one.
  *
  * toolset_export_extra_wordpress_data_raw
+ * @param null
  * @param string[] $sections_to_export Names of the sections to export.
- * @return IMigration_Data[] See Exporter::get_data() for further details.
+ * @return e\IMigration_Data[] See Exporter::get_data() for further details.
  *
  * @since 1.0
  */
@@ -33,7 +34,7 @@ class Export_Extra_Wordpress_Data_Raw implements Api_Handler_Interface {
 			return [];
 		}
 
-		$exporter = new Exporter( [ Exporter::ARGUMENT_SECTIONS => $sections_to_export ] );
+		$exporter = new e\Exporter( [ e\Exporter::ARGUMENT_SECTIONS => $sections_to_export ] );
 
 		$output = $exporter->get_data();
 
