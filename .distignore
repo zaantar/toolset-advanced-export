@@ -1,0 +1,20 @@
+# files and directories ignored by the wp dist-archive command
+
+# plugin things
+.distignore
+docs
+tests
+
+# git things
+.git
+.gitignore
+
+# composer things
+composer.json
+composer.lock
+vendor/composer
+
+# shave of some weight off Twig
+vendor/twig/doc
+vendor/twig/ext
+vendor/twig/test
