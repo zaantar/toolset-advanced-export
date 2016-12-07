@@ -66,7 +66,9 @@ final class Api {
 	 */
 	private static $callbacks = [
 
-		'export_extra_wordpress_data_raw' => [ 'args' => 2 ]
+		'export_extra_wordpress_data_raw' => [ 'args' => 2 ],
+		'export_extra_wordpress_data' => [ 'args' => 2 ],
+		'export_extra_wordpress_data_json' => [ 'args' => 2 ]
 
 	];
 

@@ -24,7 +24,7 @@ class Export_Extra_Wordpress_Data_Raw implements Api_Handler_Interface {
 	/**
 	 * @param array $arguments Original action/filter arguments.
 	 *
-	 * @return mixed
+	 * @return e\IMigration_Data[]
 	 */
 	function process_call( $arguments ) {
 
