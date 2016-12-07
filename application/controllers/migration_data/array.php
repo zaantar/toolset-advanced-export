@@ -13,6 +13,11 @@ class Migration_Data_Nested_Array implements IMigration_Data {
 	private $data = [];
 
 
+	/**
+	 * Migration_Data_Nested_Array constructor.
+	 *
+	 * @param array $data
+	 */
 	protected function __construct( $data ) {
 		$this->data = $data;
 	}
