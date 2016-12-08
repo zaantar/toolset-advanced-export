@@ -69,7 +69,7 @@ class Migration_Data_Nested_Array implements IMigration_Data {
 		$output = json_encode( $output );
 
 		if( false === $output ) {
-			throw new \InvalidArgumentException( 'Unable to produce valid JSON output.' );
+			throw new \RuntimeException( 'Unable to produce valid JSON output.' );
 		}
 
 		return $output;

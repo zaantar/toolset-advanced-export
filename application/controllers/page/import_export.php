@@ -111,10 +111,36 @@ abstract class Page_Import_Export {
 
 
 	protected function enqueue_scripts() {
+
+        $is_script_debug_mode = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+
+        $ko_version = '3.4.1';
+
+        $ko_source = sprintf(
+            '%s/public/knockout/knockout-%s%s.js',
+            TOOLSET_EXTRA_EXPORT_ABSURL,
+            $ko_version,
+            ( $is_script_debug_mode ? '.debug' : '' )
+        );
+
+        wp_register_script( 'knockout', $ko_source, [], $ko_version );
+
+        // Provides the saveAs() function used in import_export.js
+        wp_register_script(
+            'filesaver',
+            sprintf(
+                '%s/public/filesaver/FileSaver%s.js',
+                TOOLSET_EXTRA_EXPORT_ABSURL,
+                ( $is_script_debug_mode ? '' : '.min' )
+            ),
+            [],
+            '1.3.3'
+        );
+
         wp_enqueue_script(
             'toolset_extra_export_page',
             TOOLSET_EXTRA_EXPORT_ABSURL . '/public/js/import_export.js',
-            [ 'jquery', 'knockout', 'underscore', 'toolset-utils' ],
+            [ 'jquery', 'knockout', 'underscore', 'toolset-utils', 'filesaver' ],
             TOOLSET_EXTRA_EXPORT_VERSION
         );
     }

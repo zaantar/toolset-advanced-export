@@ -26,9 +26,15 @@ jQuery(document).ready(function() {
             vm.selectedSections = ko.observableArray(preselectedSections);
 
             vm.onExportClick = function() {
+
                 vm.isExportInProgress(true);
 
-                var posting = $.post({
+                if(!isFileSaverSupported()) {
+                    // todo force saving the file in wp_uploads and return a link instead
+                }
+
+                // Initiate the export request
+                var exportRequest = $.post({
                     url: ajaxurl,
                     data: {
                         action: 'toolset_ee_export',
@@ -37,15 +43,24 @@ jQuery(document).ready(function() {
                     }
                 });
 
-                posting.success(function(result) {
-
-                    vm.exportOutput(result.data.output);
-
-                }).fail(function(result) {
-
+                var fail = function(result) {
                     // todo properly process results
                     console.log(result)
+                };
 
+                exportRequest.success(function(result) {
+
+                    if(!_.has(result.data, 'output')) {
+                        fail(result);
+                        return;
+                    }
+
+                    // Convert the file content encoded as base64 string into a Blob and then download it.
+                    var blob = b64toBlob(result.data.output, 'application/zip, application/octet-stream');
+                    saveAs(blob, 'toolset_extra_export.zip');
+
+                }).fail(function(result) {
+                    fail(result);
                 }).always(function() {
                     vm.isExportInProgress(false);
                 });
@@ -58,7 +73,50 @@ jQuery(document).ready(function() {
             vm.isExportInProgress = ko.observable(false);
 
             vm.exportOutput = ko.observable();
+
         };
+
+
+        /**
+         * Thank you, http://stackoverflow.com/a/16245768/3191395.
+         *
+         * @param b64Data
+         * @param contentType
+         * @param sliceSize
+         * @returns {*}
+         */
+        var b64toBlob = function(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            var byteCharacters = atob(b64Data);
+            var byteArrays = [];
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                var byteArray = new Uint8Array(byteNumbers);
+
+                byteArrays.push(byteArray);
+            }
+
+            var blob = new Blob(byteArrays, {type: contentType});
+            return blob;
+        };
+
+
+        var isFileSaverSupported = function() {
+            try {
+                var isFileSaverSupported = !!new Blob;
+            } catch (e) { }
+            return isFileSaverSupported;
+        };
+
 
         var getModelData = function() {
             return jQuery.parseJSON(WPV_Toolset.Utils.editor_decode64(jQuery('#' + modelDataElementId).html()));

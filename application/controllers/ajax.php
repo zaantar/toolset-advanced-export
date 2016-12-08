@@ -2,6 +2,8 @@
 
 namespace ToolsetExtraExport;
 
+use Mockery\CountValidator\Exception;
+
 /**
  * Registers and handles AJAX callbacks.
  *
@@ -41,6 +43,9 @@ class Ajax {
     /**
      * toolset_ee_export callback
      *
+     * Generates an JSON export file in a ZIP archive and renders the contents of the ZIP archive as
+     * a base64-encoded string.
+     *
      * Expects following POST variables:
      * - wpnonce: A valid toolset_ee_export nonce.
      * - selected_sections: An array of section names that should be exported.
@@ -55,9 +60,21 @@ class Ajax {
         };
 
         $selected_sections = array_map( 'sanitize_text_field', toolset_ensarr( toolset_getarr( $_POST, 'selected_sections', [] ) ) );
-        $output = apply_filters( 'toolset_export_extra_wordpress_data_json', null, $selected_sections );
 
-        wp_send_json_success( [ 'message' => __( 'Export successful' ), 'output' => $output ] );
+        $exporter = new Exporter( [ Exporter::ARGUMENT_SECTIONS => $selected_sections ] );
+
+        try{
+            wp_send_json_success( [
+                'message' => __( 'Export successful' ),
+                'output' => base64_encode( $exporter->get_zip() )
+            ] );
+        } catch( Exception $e ) {
+            wp_send_json_error( [
+                'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-ee' ), $e->getMessage() )
+            ] );
+        }
+
+        die;
     }
 
 }

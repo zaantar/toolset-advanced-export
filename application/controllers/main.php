@@ -121,18 +121,6 @@ final class Main {
 
         // TODO also consider hooking into register_importer in some way
 
-
-        \add_action( 'admin_enqueue_scripts', function() {
-            $ko_version = '3.4.1';
-            $ko_source = sprintf(
-                '%s/public/knockout/knockout-%s%s.js',
-                TOOLSET_EXTRA_EXPORT_ABSURL,
-                $ko_version,
-                ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.debug' : '' )
-            );
-
-            wp_register_script( 'knockout', $ko_source, [], $ko_version );
-        } );
     }
 
 
