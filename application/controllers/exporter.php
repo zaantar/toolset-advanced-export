@@ -109,13 +109,22 @@ class Exporter {
      *
      * Resulting ZIP archive will contain a file 'settings.json' with the exported data in a JSON string.
      *
-     * @return string Content of the ZIP file.
-     * @throws \RuntimeException on failure.
+     * @param bool $preserve_file
+     *
+     * @return array Content of the ZIP file as 'file' and eventually the absolute path to the file as 'path'.
      * @since 1.0
      */
-	public function get_zip() {
+	public function get_zip( $preserve_file = false, $forced_file_name = null ) {
 
-        $file_path = tempnam( $this->get_temp_dir(), 'zip' );
+        $temp_dir = $this->get_temp_dir( $preserve_file );
+
+        // Determine absolute file path and create the file (sic!)
+        if( null == $forced_file_name ) {
+            $file_path = tempnam( $temp_dir, 'zip' );
+        } else {
+            $file_path = trailingslashit( $temp_dir ) . $forced_file_name;
+            touch( $file_path );
+        }
 
         // Create the archive
         $zip = new \ZipArchive();
@@ -130,9 +139,17 @@ class Exporter {
 
         // Get the ZIP content and delete the temporary file
         $file_contents = file_get_contents( $file_path );
-        unlink( $file_path );
 
-        return $file_contents;
+        $result = [
+            'file' => $file_contents,
+            'path' => ( $preserve_file ? $file_path : null )
+        ];
+
+        if( ! $preserve_file ) {
+            unlink( $file_path );
+        }
+
+        return $result;
     }
 
 
@@ -141,13 +158,18 @@ class Exporter {
      *
      * Uses the system temp dir if available, otherwise falls back to the WordPress upload directory.
      *
+     * @param bool $force_wp_upload_dir If true, the WordPress upload directory will be always used.
+     *
      * @return string Full path.
      * @since 1.0
      */
-    private function get_temp_dir() {
-        $temporary_directory = sys_get_temp_dir();
-        if ( !empty( $temporary_directory ) && is_dir( $temporary_directory ) && is_writable( $temporary_directory ) ) {
-            return $temporary_directory;
+    private function get_temp_dir( $force_wp_upload_dir = false ) {
+
+        if( ! $force_wp_upload_dir ) {
+            $temporary_directory = sys_get_temp_dir();
+            if ( ! empty( $temporary_directory ) && is_dir( $temporary_directory ) && is_writable( $temporary_directory ) ) {
+                return $temporary_directory;
+            }
         }
 
         $temporary_directory = wp_upload_dir();

@@ -59,15 +59,43 @@ class Ajax {
             die;
         };
 
-        $selected_sections = array_map( 'sanitize_text_field', toolset_ensarr( toolset_getarr( $_POST, 'selected_sections', [] ) ) );
-
-        $exporter = new Exporter( [ Exporter::ARGUMENT_SECTIONS => $selected_sections ] );
-
         try{
-            wp_send_json_success( [
+
+            $selected_sections = array_map( 'sanitize_text_field', toolset_ensarr( toolset_getarr( $_POST, 'selected_sections', [] ) ) );
+
+            /**
+             * toolset_extra_export_preserve_file
+             *
+             * Allow for forcing us to preserve the export file and provide a link to it.
+             */
+            $preserve_file = (bool) apply_filters(
+                'toolset_extra_export_preserve_file',
+                ( 'link' == toolset_getarr( $_POST, 'export_method', 'link' ) )
+            );
+
+            $exporter = new Exporter( [ Exporter::ARGUMENT_SECTIONS => $selected_sections ] );
+
+            // Force file name if we need a link afterwards.
+            $zip = $exporter->get_zip( $preserve_file, ( $preserve_file ? 'toolset_extra_export.zip' : null ) );
+
+            $results = [
                 'message' => __( 'Export successful' ),
-                'output' => base64_encode( $exporter->get_zip() )
-            ] );
+                'output' => base64_encode( $zip['file'] )
+            ];
+
+            // If we have a link, we need to convert its absolute path to URL and send it as well.
+            if( $preserve_file ) {
+                $full_path = $zip['path'];
+                if( substr( $full_path, 0, strlen( ABSPATH ) ) !== ABSPATH ) {
+                    throw new \RuntimeException( 'Cannot generate download link.' );
+                }
+                $relative_path = substr( $full_path, strlen( untrailingslashit( ABSPATH ) ) );
+                $file_url = site_url() . $relative_path;
+                $results['link'] = $file_url;
+            }
+
+            wp_send_json_success( $results );
+
         } catch( Exception $e ) {
             wp_send_json_error( [
                 'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-ee' ), $e->getMessage() )

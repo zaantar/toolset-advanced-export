@@ -17,6 +17,12 @@
 
     <p class="toolset-update-button-wrap">
 
+        <span style="float: left; font-weight: bold"
+              data-bind="visible: ( downloadLink().length > 0 )"
+        >
+            <a data-bind="attr: { href: downloadLink }">{{ __( 'Download exported settings' ) }}</a>
+        </span>
+
         <button
                 type="submit" name="toolset_extra_export" class="button-primary form-submit submit"
                 data-bind="click: onExportClick, enable: ( isExportPossible() && ! isExportInProgress() )"

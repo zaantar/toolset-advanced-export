@@ -28,10 +28,7 @@ jQuery(document).ready(function() {
             vm.onExportClick = function() {
 
                 vm.isExportInProgress(true);
-
-                if(!isFileSaverSupported()) {
-                    // todo force saving the file in wp_uploads and return a link instead
-                }
+                vm.downloadLink('');
 
                 // Initiate the export request
                 var exportRequest = $.post({
@@ -39,7 +36,8 @@ jQuery(document).ready(function() {
                     data: {
                         action: 'toolset_ee_export',
                         wpnonce: self.exportNonce,
-                        selected_sections: vm.selectedSections()
+                        selected_sections: vm.selectedSections(),
+                        export_method: (isFileSaverSupported() ? 'saveas' : 'link')
                     }
                 });
 
@@ -55,9 +53,15 @@ jQuery(document).ready(function() {
                         return;
                     }
 
-                    // Convert the file content encoded as base64 string into a Blob and then download it.
-                    var blob = b64toBlob(result.data.output, 'application/zip, application/octet-stream');
-                    saveAs(blob, 'toolset_extra_export.zip');
+                    if(isFileSaverSupported()) {
+                        // Convert the file content encoded as base64 string into a Blob and then download it.
+                        var blob = b64toBlob(result.data.output, 'application/zip, application/octet-stream');
+                        saveAs(blob, 'toolset_extra_export.zip');
+                    }
+
+                    if(_.has(result.data, 'link')) {
+                        vm.downloadLink(result.data.link);
+                    }
 
                 }).fail(function(result) {
                     fail(result);
@@ -73,6 +77,8 @@ jQuery(document).ready(function() {
             vm.isExportInProgress = ko.observable(false);
 
             vm.exportOutput = ko.observable();
+
+            vm.downloadLink = ko.observable('');
 
         };
 
