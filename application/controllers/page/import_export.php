@@ -62,9 +62,7 @@ abstract class Page_Import_Export {
 	protected function build_twig_context() {
 
 		$context = [
-			'strings' => [
-				'title' => 'rendered d\'oh!'
-			]
+			'sections' => e\Data_Section::labels()
 		];
 
 		return $context;
