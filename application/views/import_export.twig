@@ -7,7 +7,7 @@
             <p>
                 <label>
                     <input type="checkbox" value="{{ section_name }}"
-                           data-bind="checked: selectedSections"
+                           data-bind="checked: selectedSections, disable: isExportInProgress"
                     />
                     {{ section_label|raw }}
                 </label>
@@ -16,12 +16,17 @@
     </div>
 
     <p class="toolset-update-button-wrap">
+
         <button
                 type="submit" name="toolset_extra_export" class="button-primary form-submit submit"
-                data-bind="click: onExportClick, enable: isExportPossible"
+                data-bind="click: onExportClick, enable: ( isExportPossible() && ! isExportInProgress() )"
         >{{ __( 'Export' ) }}</button>
+
+        <span class="spinner" data-bind="style: { visibility: (isExportInProgress() ? 'visible' : 'hidden') }"></span>
     </p>
 
     <script id="toolset_extra_export_model_data" type="text/plain">{{ js_model_data }}</script>
+
+    <p data-bind="text: exportOutput"></p>
 
 </div>

@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'ToolsetExtraExport\Ajax' => __DIR__ . '/controllers/ajax.php',
 	'ToolsetExtraExport\Api' => __DIR__ . '/controllers/api.php',
 	'ToolsetExtraExport\ApiHandlers\Api_Handler_Interface' => __DIR__ . '/controllers/api_handler/interface.php',
 	'ToolsetExtraExport\ApiHandlers\Export_Extra_Wordpress_Data_Raw' => __DIR__ . '/controllers/api_handler/export_extra_wordpress_data_raw.php',

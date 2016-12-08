@@ -56,62 +56,74 @@ final class Main {
 				$autoloader->register_classmap( $classmap );
 			}
 
+			$this->finish_initialization();
+
 		}, 11 );
+	}
 
 
-		// On every request, we only need to initialize the filter hook API.
-		//
-		//
-		\add_action( 'init', function() {
-			Api::initialize();
-		} );
+	private function finish_initialization() {
 
-
-		// Indicate that the API is available
-		//
-		//
-		\add_filter( 'is_toolset_extra_export_available', '__return_true' );
-
-
-		// Add a standalone (sub)menu item under Tools
-		//
-		// Not yet.
-		/*\add_action( 'admin_menu', function() {
-
-			$import_export_page_hook = \add_submenu_page(
-				'tools.php',
-				__( 'Toolset Extra Export', 'toolset-ee' ),
-				__( 'Toolset Extra Export', 'toolset-ee' ),
-				'manage_options',
-				// Not referencing the page controller class directly so its file is loaded only when we actually need it
-				self::MENU_SLUG,
-				function() {
-					$page = Page_Tools::get_instance();
-					$page->render();
-				}
-			);
-
-			\add_action( 'admin_enqueue_scripts', function( $hook ) use( $import_export_page_hook ) {
-				if( $import_export_page_hook == $hook ) {
-					Page_Tools::initialize();
-				}
-			} );
-
-		} );*/
-
-
-		// Filter priority determines the order of tabs, this is documented in Toolset_Export_Import_Screen.
+        // On every request, we only need to initialize the filter hook API and AJAX callback handlers.
         //
         //
-		\add_filter( 'toolset_filter_register_export_import_section', function( $sections ) {
-	        Gui\Toolset_Ie_Section::initialize();
+        \add_action( 'init', function() {
+            Api::initialize();
+
+            if( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+                Ajax::initialize();
+            }
+        } );
+
+
+        // Indicate that the API is available
+        //
+        //
+        \add_filter( 'is_toolset_extra_export_available', '__return_true' );
+
+
+        // Add a standalone (sub)menu item under Tools
+        //
+        // Not yet.
+        /*\add_action( 'admin_menu', function() {
+
+            $import_export_page_hook = \add_submenu_page(
+                'tools.php',
+                __( 'Toolset Extra Export', 'toolset-ee' ),
+                __( 'Toolset Extra Export', 'toolset-ee' ),
+                'manage_options',
+                // Not referencing the page controller class directly so its file is loaded only when we actually need it
+                self::MENU_SLUG,
+                function() {
+                    $page = Page_Tools::get_instance();
+                    $page->render();
+                }
+            );
+
+            \add_action( 'admin_enqueue_scripts', function( $hook ) use( $import_export_page_hook ) {
+                if( $import_export_page_hook == $hook ) {
+                    Page_Tools::initialize();
+                }
+            } );
+
+        } );*/
+
+
+        // Filter priority determines the order of tabs, this is documented in Toolset_Export_Import_Screen.
+        //
+        //
+        \add_filter( 'toolset_filter_register_export_import_section', function( $sections ) {
+            Gui\Toolset_Ie_Section::initialize();
 
             return Gui\Toolset_Ie_Section::get_instance()->register( $sections );
         }, 0 );
 
 
-		\add_action( 'admin_enqueue_scripts', function() {
-		    $ko_version = '3.4.1';
+        // TODO also consider hooking into register_importer in some way
+
+
+        \add_action( 'admin_enqueue_scripts', function() {
+            $ko_version = '3.4.1';
             $ko_source = sprintf(
                 '%s/public/knockout/knockout-%s%s.js',
                 TOOLSET_EXTRA_EXPORT_ABSURL,
@@ -119,12 +131,9 @@ final class Main {
                 ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '.debug' : '' )
             );
 
-		    wp_register_script( 'knockout', $ko_source, [], $ko_version );
+            wp_register_script( 'knockout', $ko_source, [], $ko_version );
         } );
-
-
-        // TODO also consider hooking into register_importer in some way
-	}
+    }
 
 
 	private function __clone() { }

@@ -64,7 +64,8 @@ abstract class Page_Import_Export {
 	protected function build_twig_context() {
 
         $js_model_data = [
-            'preselected_sections' => e\Data_Section::values()
+            'preselected_sections' => e\Data_Section::values(),
+            'ajax_nonce' => wp_create_nonce( e\Ajax::EXPORT_NONCE )
         ];
 
 		$context = [

@@ -13,7 +13,7 @@ Toolset.ExtraExport = Toolset.ExtraExport || {};
  */
 jQuery(document).ready(function() {
 
-    Toolset.ExtraExport.ExportPageViewModel = new function($) {
+    Toolset.ExtraExport.ExportPageController = new function($) {
 
         var self = this;
 
@@ -26,12 +26,38 @@ jQuery(document).ready(function() {
             vm.selectedSections = ko.observableArray(preselectedSections);
 
             vm.onExportClick = function() {
-                alert( 'click!' )
+                vm.isExportInProgress(true);
+
+                var posting = $.post({
+                    url: ajaxurl,
+                    data: {
+                        action: 'toolset_ee_export',
+                        wpnonce: self.exportNonce,
+                        selected_sections: vm.selectedSections()
+                    }
+                });
+
+                posting.success(function(result) {
+
+                    vm.exportOutput(result.data.output);
+
+                }).fail(function(result) {
+
+                    // todo properly process results
+                    console.log(result)
+
+                }).always(function() {
+                    vm.isExportInProgress(false);
+                });
             };
 
             vm.isExportPossible = ko.pureComputed(function() {
                 return (0 < vm.selectedSections().length);
             });
+
+            vm.isExportInProgress = ko.observable(false);
+
+            vm.exportOutput = ko.observable();
         };
 
         var getModelData = function() {
@@ -42,6 +68,7 @@ jQuery(document).ready(function() {
 
             // Retrieve and process data passed from PHP
             self.modelData = getModelData();
+            self.exportNonce = self.modelData['ajax_nonce'];
 
             // Fire in the hole!
             ko.applyBindings(new vm(self.modelData['preselected_sections'] || []), document.getElementById(rootElementId));
