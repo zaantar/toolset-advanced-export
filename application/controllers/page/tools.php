@@ -1,6 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\Gui;
+
+use ToolsetExtraExport as e;
+
 
 /**
  * A controller for the Import/Export page in the Tools menu.

@@ -73,7 +73,6 @@ final class Main {
 		\add_filter( 'is_toolset_extra_export_available', '__return_true' );
 
 
-
 		// Add a standalone (sub)menu item under Tools
 		//
 		// Not yet.
@@ -100,8 +99,18 @@ final class Main {
 
 		} );*/
 
-		// TODO also hook into toolset_filter_register_export_import_section for adding the menu there.
-		// TODO also consider hooking into register_importer in some way
+
+		// Filter priority determines the order of tabs, this is documented in Toolset_Export_Import_Screen.
+        //
+        //
+		\add_filter( 'toolset_filter_register_export_import_section', function( $sections ) {
+	        Gui\Toolset_Ie_Section::initialize();
+
+            return Gui\Toolset_Ie_Section::get_instance()->register( $sections );
+        }, 100 );
+
+
+        // TODO also consider hooking into register_importer in some way
 	}
 
 

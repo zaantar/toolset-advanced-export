@@ -15,6 +15,7 @@ return [
 	'ToolsetExtraExport\IMigration_Handler' => __DIR__ . '/controllers/migration_handler/interface.php',
 	'ToolsetExtraExport\Migration_Handler_Option_Array' => __DIR__ . '/controllers/migration_handler/option_array.php',
 	'ToolsetExtraExport\Migration_Handler_Settings_Reading' => __DIR__ . '/controllers/migration_handler/settings_reading.php',
-	'ToolsetExtraExport\Page_Import_Export' => __DIR__ . '/controllers/page/import_export.php',
-	'ToolsetExtraExport\Page_Tools' => __DIR__ . '/controllers/page/tools.php',
+	'ToolsetExtraExport\Gui\Page_Import_Export' => __DIR__ . '/controllers/page/import_export.php',
+	'ToolsetExtraExport\Gui\Page_Tools' => __DIR__ . '/controllers/page/tools.php',
+	'ToolsetExtraExport\Gui\Toolset_Ie_Section' => __DIR__ . '/controllers/page/toolset_ie_section.php',
 ];

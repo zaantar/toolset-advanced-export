@@ -1,6 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\Gui;
+
+use ToolsetExtraExport as e;
+
 
 /**
  * Base page for rendering the import/export GUI.
@@ -17,7 +20,7 @@ abstract class Page_Import_Export {
 	/**
 	 * @return Page_Import_Export
 	 */
-	final public static function get_instance() {
+	public static function get_instance() {
 		if ( ! isset( static::$instance ) ) {
 			static::$instance = new static();
 		}
@@ -81,7 +84,7 @@ abstract class Page_Import_Export {
 
 			// If there is no Twig instance loaded yet, use the one packed with the plugin.
 			if ( ! class_exists( '\Twig_Environment' ) ) {
-				Customized_Twig_Autoloader::register( false );
+				e\Customized_Twig_Autoloader::register( false );
 			}
 
 			$loader = new \Twig_Loader_Filesystem();
@@ -99,6 +102,11 @@ abstract class Page_Import_Export {
 
 		return $twig;
 	}
+
+
+	protected function enqueue_scripts() {
+
+    }
 
 
 
