@@ -35,7 +35,9 @@ abstract class Page_Import_Export {
 
 
 	public static function initialize() {
+        $instance = self::get_instance();
 
+        $instance->enqueue_scripts();
 	}
 
 
@@ -61,8 +63,13 @@ abstract class Page_Import_Export {
 	 */
 	protected function build_twig_context() {
 
+        $js_model_data = [
+            'preselected_sections' => e\Data_Section::values()
+        ];
+
 		$context = [
-			'sections' => e\Data_Section::labels()
+			'sections' => e\Data_Section::labels(),
+            'js_model_data' => base64_encode( wp_json_encode( $js_model_data ) )
 		];
 
 		return $context;
@@ -103,7 +110,12 @@ abstract class Page_Import_Export {
 
 
 	protected function enqueue_scripts() {
-
+        wp_enqueue_script(
+            'toolset_extra_export_page',
+            TOOLSET_EXTRA_EXPORT_ABSURL . '/public/js/import_export.js',
+            [ 'jquery', 'knockout', 'underscore', 'toolset-utils' ],
+            TOOLSET_EXTRA_EXPORT_VERSION
+        );
     }
 
 

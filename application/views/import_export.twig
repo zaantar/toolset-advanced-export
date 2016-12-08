@@ -1,17 +1,27 @@
-<p>{{ __( 'This section allows you to export various settings which are not covered by the WordPress XML export. The purpose of exporting and importing these settings is to allow users of your Toolset-based theme to receive an exact copy of your site without having to set options manually.' ) }}</p>
-<p><a href="{# todo add missing link #}">{{ __( 'How to build Toolset-based themes' ) }}</a></p>
+<div id="toolset_extra_export_wrap">
+    <p>{{ __( 'This section allows you to export various settings which are not covered by the WordPress XML export. The purpose of exporting and importing these settings is to allow users of your Toolset-based theme to receive an exact copy of your site without having to set options manually.' ) }}</p>
+    <p><a href="{# todo add missing link #}">{{ __( 'How to build Toolset-based themes' ) }}</a></p>
 
-<div style="margin-top: 30px;">
-    {% for section_name, section_label in sections %}
-        <p>
-            <label>
-                <input type="checkbox" name="export_section[]" value="{{ section_name }}"/>
-                {{ section_label|raw }}
-            </label>
-        </p>
-    {% endfor %}
+    <div style="margin-top: 30px;">
+        {% for section_name, section_label in sections %}
+            <p>
+                <label>
+                    <input type="checkbox" value="{{ section_name }}"
+                           data-bind="checked: selectedSections"
+                    />
+                    {{ section_label|raw }}
+                </label>
+            </p>
+        {% endfor %}
+    </div>
+
+    <p class="toolset-update-button-wrap">
+        <button
+                type="submit" name="toolset_extra_export" class="button-primary form-submit submit"
+                data-bind="click: onExportClick, enable: isExportPossible"
+        >{{ __( 'Export' ) }}</button>
+    </p>
+
+    <script id="toolset_extra_export_model_data" type="text/plain">{{ js_model_data }}</script>
+
 </div>
-
-<p class="toolset-update-button-wrap">
-    <button type="submit" name="toolset_extra_export" class="button-primary form-submit submit">{{ __( 'Export' ) }}</button>
-</p>
