@@ -1,13 +1,16 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\MigrationHandler;
+
+use ToolsetExtraExport as e;
+
 
 /**
  * Handles the import and export of a single WordPress option.
  *
  * @since 1.0
  */
-class Migration_Handler_Option implements IMigration_Handler {
+class Option implements IMigration_Handler {
 
 
     protected $option_name;
@@ -16,7 +19,7 @@ class Migration_Handler_Option implements IMigration_Handler {
 
 
     /**
-     * Migration_Handler_Option constructor.
+     * Option constructor.
      *
      * Note: Default default value is false as per get_option() signature; defaultception!
      *
@@ -46,17 +49,17 @@ class Migration_Handler_Option implements IMigration_Handler {
 
 
     /**
-     * @return IMigration_Data
+     * @return e\IMigration_Data
      */
     function export() {
 
         $option_value = call_user_func( $this->sanitization_method, get_option( $this->option_name, $this->default_value ) );
-        return new Migration_Data_Raw( $option_value );
+        return new e\Migration_Data_Raw( $option_value );
 
     }
 
     /**
-     * @param IMigration_Data $data Correct migration data for the section
+     * @param e\IMigration_Data $data Correct migration data for the section
      *
      * @return mixed @todo Toolset_Result or similar
      * @throws \InvalidArgumentException

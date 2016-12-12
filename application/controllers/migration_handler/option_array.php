@@ -1,6 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\MigrationHandler;
+
+use ToolsetExtraExport as e;
+
 
 /**
  * Handles migration of some WordPress options.
@@ -9,13 +12,13 @@ namespace ToolsetExtraExport;
  *
  * @since 1.0
  */
-abstract class Migration_Handler_Option_Array implements IMigration_Handler {
+abstract class Option_Array implements IMigration_Handler {
 
 
 	/**
 	 * Retrieves a list of option handlers.
 	 *
-	 * @return Migration_Handler_Option[]
+	 * @return Option[]
      * @since 1.0
 	 */
 	abstract protected function get_option_list();
@@ -24,7 +27,7 @@ abstract class Migration_Handler_Option_Array implements IMigration_Handler {
 	/**
 	 * Export WordPress options into an Migration_Data_Nested_Array object.
 	 *
-	 * @return IMigration_Data
+	 * @return e\IMigration_Data
 	 * @since 1.0
 	 */
 	function export() {
@@ -37,14 +40,14 @@ abstract class Migration_Handler_Option_Array implements IMigration_Handler {
 			$output[ $option->get_name() ] = $option_value;
 		}
 
-		$migration_data = Migration_Data_Nested_Array::from_array( $output );
+		$migration_data = e\Migration_Data_Nested_Array::from_array( $output );
 
 		return $migration_data;
 	}
 
 
 	/**
-	 * @param IMigration_Data $migration_data
+	 * @param e\IMigration_Data $migration_data
 	 *
 	 * @return mixed
 	 */

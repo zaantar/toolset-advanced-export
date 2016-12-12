@@ -1,15 +1,18 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetExtraExport\MigrationHandler;
+
+use ToolsetExtraExport as e;
+
 
 /**
  * Handles the import and export of a WordPress option with a post ID.
  *
  * When exporting, it stores additional information for identifying a post even after its ID changes.
  *
- * @package ToolsetExtraExport
+ * @since 1.0
  */
-class Migration_Handler_Post_Option extends Migration_Handler_Option {
+class Post_Option extends Option {
 
 
     public function __construct( $option_name, $default_value = 0 ) {
@@ -20,7 +23,7 @@ class Migration_Handler_Post_Option extends Migration_Handler_Option {
     public function export() {
         $option_value = call_user_func( $this->sanitization_method, get_option( $this->option_name, $this->default_value ) );
         $post_data = $this->get_portable_post_data( $option_value );
-        return Migration_Data_Nested_Array::from_array( $post_data );
+        return e\Migration_Data_Nested_Array::from_array( $post_data );
     }
 
 

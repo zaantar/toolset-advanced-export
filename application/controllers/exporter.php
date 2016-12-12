@@ -61,7 +61,7 @@ class Exporter {
 
 			// Get a dedicated handler for the section.
 			try {
-				/** @var IMigration_Handler $migration_handler */
+				/** @var MigrationHandler\IMigration_Handler $migration_handler */
 				$migration_handler = Migration_Handler_Factory::get( $section_name );
 			} catch( \Exception $e ) {
 				continue;
@@ -110,6 +110,7 @@ class Exporter {
      * Resulting ZIP archive will contain a file 'settings.json' with the exported data in a JSON string.
      *
      * @param bool $preserve_file
+     * @param null|string $forced_file_name
      *
      * @return array Content of the ZIP file as 'file' and eventually the absolute path to the file as 'path'.
      * @since 1.0
