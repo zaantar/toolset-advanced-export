@@ -38,7 +38,7 @@ class Settings_Reading extends Option_Array {
                     $value = (int) $value;
 
                     // minimum is 1
-                    if ( 0 <= $value ) {
+                    if ( 0 >= $value ) {
                         return 10;
                     }
 
@@ -48,7 +48,7 @@ class Settings_Reading extends Option_Array {
                     $value = (int) $value;
 
                     // minimum is 1
-                    if ( 0 <= $value ) {
+                    if ( 0 >= $value ) {
                         return 10;
                     }
 

@@ -65,11 +65,10 @@ final class Api {
 	 *     - int $args: Number of arguments of the filter
 	 */
 	private static $callbacks = [
-
 		'export_extra_wordpress_data_raw' => [ 'args' => 2 ],
 		'export_extra_wordpress_data' => [ 'args' => 2 ],
-		'export_extra_wordpress_data_json' => [ 'args' => 2 ]
-
+		'export_extra_wordpress_data_json' => [ 'args' => 2 ],
+        'import_extra_wordpress_data' => [ 'args' => 3 ]
 	];
 
 

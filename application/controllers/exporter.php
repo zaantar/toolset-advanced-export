@@ -5,7 +5,7 @@ namespace ToolsetExtraExport;
 /**
  * Higher level API for performing export.
  *
- * Usage example: $exported = new Exporter( [ 'sections' => [ ... ], ... ] ); $data = $exporter->get_data();
+ * Usage example: $exporter = new Exporter( [ 'sections' => [ ... ], ... ] ); $data = $exporter->get_data();
  *
  * @since 1.0
  */
@@ -25,8 +25,7 @@ class Exporter {
 	 * Exporter constructor.
 	 *
 	 * @param [] $args Following arguments are accepted:
-	 *     - 'sections': array of names of sections that should be exported. If a section is
-	 *       not supported, it will be skipped silently.
+	 *     - 'sections': array of names of sections that should be exported.
 	 * @throws \InvalidArgumentException
 	 * @since 1.0
 	 */
@@ -60,12 +59,8 @@ class Exporter {
 		foreach( $this->sections_to_export as $section_name ) {
 
 			// Get a dedicated handler for the section.
-			try {
-				/** @var MigrationHandler\IMigration_Handler $migration_handler */
-				$migration_handler = Migration_Handler_Factory::get( $section_name );
-			} catch( \Exception $e ) {
-				continue;
-			}
+			/** @var MigrationHandler\IMigration_Handler $migration_handler */
+			$migration_handler = Migration_Handler_Factory::get( $section_name );
 
 			$migration_data = $migration_handler->export();
 

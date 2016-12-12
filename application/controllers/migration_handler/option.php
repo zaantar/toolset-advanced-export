@@ -68,9 +68,12 @@ class Option implements IMigration_Handler {
         $option_value = $this->get_raw_migration_data( $data )->get_raw_value();
         $option_value = $this->sanitize( $option_value );
 
+        $previous_value = get_option( $this->option_name );
+        $is_same = ( $previous_value == $option_value );
+
         $is_updated = update_option( $this->option_name, $option_value );
 
-        return utils\create_result( $is_updated );
+        return utils\create_result( $is_updated || $is_same );
     }
 
 
@@ -79,6 +82,14 @@ class Option implements IMigration_Handler {
     }
 
 
+    /**
+     * If migration data in the form of a nested array is provided, checks that it can be interpreted as a raw value,
+     * and return this value instead. Raw value will be returned without further modifications.
+     *
+     * @param e\Migration_Data_Raw|e\Migration_Data_Nested_Array $data
+     * @return e\Migration_Data_Raw
+     * @throws \InvalidArgumentException
+     */
     private function get_raw_migration_data( $data ) {
         if( $data instanceof e\Migration_Data_Raw ) {
             return $data;

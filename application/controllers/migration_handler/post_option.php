@@ -39,9 +39,13 @@ class Post_Option extends Option {
         }
 
         $option_value = $this->sanitize( $this->calculate_value_on_import( $data ) );
+
+        $previous_value = get_option( $this->option_name );
+        $is_same = ( $previous_value == $option_value );
+
         $is_updated = update_option( $this->option_name, $option_value );
 
-        return utils\create_result( $is_updated );
+        return utils\create_result( $is_updated || $is_same );
     }
 
 
@@ -51,6 +55,7 @@ class Post_Option extends Option {
      */
     private function calculate_value_on_import( $data ) {
 
+        $data = $data->to_array();
         if( ! toolset_getarr( $data, 'exists', false ) ) {
             return 0;
         }
