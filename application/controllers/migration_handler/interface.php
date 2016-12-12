@@ -18,7 +18,7 @@ interface IMigration_Handler {
 
 	/**
 	 * @param e\IMigration_Data $data Correct migration data for the section
-	 * @return mixed @todo Toolset_Result or similar
+	 * @return \Toolset_Result|\Toolset_Result_Set
 	 * @throws \InvalidArgumentException
 	 */
 	function import( $data );

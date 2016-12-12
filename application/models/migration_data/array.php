@@ -26,7 +26,7 @@ class Migration_Data_Nested_Array implements IMigration_Data {
 	/**
 	 * @param array $array_input
 	 *
-	 * @return IMigration_Data
+	 * @return Migration_Data_Nested_Array
 	 */
 	public static function from_array( $array_input ) {
 		if( ! is_array( $array_input ) ) {
@@ -46,7 +46,8 @@ class Migration_Data_Nested_Array implements IMigration_Data {
 	/**
 	 * @param string $json_input
 	 *
-	 * @return IMigration_Data
+	 * @return Migration_Data_Nested_Array
+     * @throws \InvalidArgumentException
 	 */
 	public static function from_json( $json_input ) {
 		$input = json_decode( $json_input, true );

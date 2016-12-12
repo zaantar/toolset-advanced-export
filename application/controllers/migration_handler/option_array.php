@@ -52,8 +52,27 @@ abstract class Option_Array implements IMigration_Handler {
 	 * @return mixed
 	 */
 	function import( $migration_data ) {
-		// todo
-		throw new \RuntimeException( 'Not implemented.' );
+
+	    if( ! $migration_data instanceof e\Migration_Data_Nested_Array ) {
+            throw new \InvalidArgumentException( 'Wrong data type for options import' );
+        }
+
+        $migration_array = $migration_data->to_array();
+
+	    $results = new \Toolset_Result_Set();
+        $options = $this->get_option_list();
+        foreach( $options as $option ) {
+
+            if( array_key_exists( $option->get_name(), $migration_array ) ) {
+                $option_data = e\Migration_Data_Nested_Array::from_array( $migration_array[ $option->get_name() ] );
+                $results->add( $option->import( $option_data ) );
+            } else {
+                $results->add( false, sprintf( __( 'Option %s was missing in the import data.', 'toolset-ee' ), $option->get_name() ) );
+            }
+
+        }
+
+        return $results;
 	}
 
 }

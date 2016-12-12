@@ -3,7 +3,7 @@
 namespace ToolsetExtraExport\MigrationHandler;
 
 use ToolsetExtraExport as e;
-
+use ToolsetExtraExport\Utils as utils;
 
 /**
  * Handles the import and export of a single WordPress option.
@@ -52,20 +52,43 @@ class Option implements IMigration_Handler {
      * @return e\IMigration_Data
      */
     function export() {
-
-        $option_value = call_user_func( $this->sanitization_method, get_option( $this->option_name, $this->default_value ) );
+        $option_value = $this->sanitize( get_option( $this->option_name, $this->default_value ) );
         return new e\Migration_Data_Raw( $option_value );
-
     }
 
+
     /**
-     * @param e\IMigration_Data $data Correct migration data for the section
+     * @param e\Migration_Data_Raw|e\Migration_Data_Nested_Array $data Correct migration data for the section
      *
-     * @return mixed @todo Toolset_Result or similar
+     * @return \Toolset_Result
      * @throws \InvalidArgumentException
      */
     function import( $data ) {
-        // TODO: Implement import() method.
+
+        $option_value = $this->get_raw_migration_data( $data )->get_raw_value();
+        $option_value = $this->sanitize( $option_value );
+
+        $is_updated = update_option( $this->option_name, $option_value );
+
+        return utils\create_result( $is_updated );
     }
 
+
+    protected function sanitize( $value ) {
+        return call_user_func( $this->sanitization_method, $value );
+    }
+
+
+    private function get_raw_migration_data( $data ) {
+        if( $data instanceof e\Migration_Data_Raw ) {
+            return $data;
+        } elseif( $data instanceof e\Migration_Data_Nested_Array ) {
+            $values = $data->to_array();
+            if( 1 === count( $values ) ) {
+                return new e\Migration_Data_Raw( $values[0] );
+            }
+        }
+
+        throw new \InvalidArgumentException( 'Wrong data type for option import' );
+    }
 }
