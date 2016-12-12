@@ -7,20 +7,16 @@ namespace ToolsetExtraExport;
  *
  * Depending on self::get_option_list(), which must be overridden, gathers and sanitizes data from WordPress options.
  *
- * @since 1.1
+ * @since 1.0
  */
 abstract class Migration_Handler_Option_Array implements IMigration_Handler {
 
 
 	/**
-	 * Retrieves a list of options in an associative array.
+	 * Retrieves a list of option handlers.
 	 *
-	 * Keys are option names and elements are argument arrays for each option:
-	 *     - 'default_value': string|int|array
-	 *     - 'sanitize_callback': callable|null Function that will accept the option value as a first parameter
-	 *       and sanitize it.
-	 *
-	 * @return array[string]
+	 * @return Migration_Handler_Option[]
+     * @since 1.0
 	 */
 	abstract protected function get_option_list();
 
@@ -36,19 +32,9 @@ abstract class Migration_Handler_Option_Array implements IMigration_Handler {
 		$options = $this->get_option_list();
 
 		$output = [];
-		foreach( $options as $option_name => $option_settings ) {
-
-			// default default value is false as per get_option() signature; defaultception!
-			$default_value = toolset_getarr( $option_settings, 'default_value', false );
-
-			$option_value = get_option( $option_name, $default_value );
-
-			$sanitize_callback = toolset_getarr( $option_settings, 'sanitize_callback', null );
-			if( is_callable( $sanitize_callback ) ) {
-				$option_value = call_user_func( $sanitize_callback, $option_value );
-			}
-
-			$output[ $option_name ] = $option_value;
+		foreach( $options as $option ) {
+		    $option_value = $option->export()->to_array();
+			$output[ $option->get_name() ] = $option_value;
 		}
 
 		$migration_data = Migration_Data_Nested_Array::from_array( $output );

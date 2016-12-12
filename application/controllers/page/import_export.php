@@ -101,7 +101,7 @@ abstract class Page_Import_Export {
 			// Twig extensions
 			//
 			//
-			$twig->addFunction( '__', new \Twig_SimpleFunction( '__', function( $text, $domain = 'types' ) {
+			$twig->addFunction( '__', new \Twig_SimpleFunction( '__', function( $text, $domain = 'toolset-ee' ) {
 				return __( $text, $domain );
 			} ) );
 		}

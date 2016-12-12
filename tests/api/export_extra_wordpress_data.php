@@ -20,20 +20,14 @@ class Export_Extra_Wordpress_Data extends tests\Test_Case {
                 'section_name' => 'settings_reading',
                 'default_value' => [
                     'settings_reading' => [
-                        'settings' => [
-                            'blog_charset' => 'UTF-8',
-                            'show_on_front' => 'posts',
-                            'page_on_front' => 0,
-                            'page_for_posts' => 0,
-                            'posts_per_page' => 10,
-                            'post_per_rss' => 10,
-                            'rss_use_excerpt' => 0,
-                            'blog_public' => 1
-                        ],
-                        'portable' => [
-                            'page_on_front' => [ 'exists' => false ],
-                            'page_for_posts' => [ 'exists' => false ]
-                        ]
+                        'blog_charset' => ['UTF-8'],
+                        'show_on_front' => ['posts'],
+                        'page_on_front' => [ 'exists' => false ],
+                        'page_for_posts' => [ 'exists' => false ],
+                        'posts_per_page' => [10],
+                        'posts_per_rss' => [10],
+                        'rss_use_excerpt' => [0],
+                        'blog_public' => [1]
                     ]
                 ]
             ]
@@ -53,7 +47,7 @@ class Export_Extra_Wordpress_Data extends tests\Test_Case {
 
         $this->assertNotNull( $output );
 
-        $this->assertEquals( $expected_default_value, $output, 'Default values are not equal', 0, 10, true );
+        $this->assertAssociativeArrayEquals( $expected_default_value, $output, 'Default values are not equal' );
 
     }
 }
