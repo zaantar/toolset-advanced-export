@@ -2,8 +2,6 @@
 
 namespace ToolsetExtraExport;
 
-use Mockery\CountValidator\Exception;
-
 /**
  * Registers and handles AJAX callbacks.
  *
@@ -96,7 +94,7 @@ class Ajax {
 
             wp_send_json_success( $results );
 
-        } catch( Exception $e ) {
+        } catch( \Exception $e ) {
             wp_send_json_error( [
                 'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-ee' ), $e->getMessage() )
             ] );

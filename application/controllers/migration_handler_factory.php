@@ -46,7 +46,7 @@ class Migration_Handler_Factory {
 		$migration_handler = apply_filters( 'toolset_extra_export_get_migration_handler', $migration_handler, $section_name );
 
 		if( ! $migration_handler instanceof MigrationHandler\IMigration_Handler ) {
-			throw new \RuntimeException( 'Migration handler not available.' );
+			throw new \RuntimeException( sprintf( __( 'Migration handler for %s not available.', 'toolset-ee' ), $section_name ) );
 		}
 
 		return $migration_handler;

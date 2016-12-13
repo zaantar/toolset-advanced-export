@@ -29,6 +29,7 @@ jQuery(document).ready(function() {
 
                 vm.isExportInProgress(true);
                 vm.downloadLink('');
+                vm.errorMessage('');
 
                 // Initiate the export request
                 var exportRequest = $.post({
@@ -42,7 +43,11 @@ jQuery(document).ready(function() {
                 });
 
                 var fail = function(result) {
-                    // todo properly process results
+                    if(_.has(result, 'data') && _.has(result.data, 'message')) {
+                        vm.errorMessage(result.data.message);
+                    } else {
+                        vm.errorMessage('An unknown error has happened.');
+                    }
                     console.log(result)
                 };
 
@@ -79,6 +84,8 @@ jQuery(document).ready(function() {
             vm.exportOutput = ko.observable();
 
             vm.downloadLink = ko.observable('');
+
+            vm.errorMessage = ko.observable('');
 
         };
 
