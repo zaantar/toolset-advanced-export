@@ -6,6 +6,7 @@ handled properly.
 
 - `Toolset_Result` and `Toolset_Result_Set` are being used throughout the code.
 - The `toolset-utils` script is needed for `WPV_Toolset.Utils.editor_decode64()`. 
+- `toolset_ensarr()` is used on several occasions.
 
 ## Solved dependencies
 
