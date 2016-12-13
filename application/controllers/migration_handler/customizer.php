@@ -2,12 +2,17 @@
 
 namespace ToolsetExtraExport\MigrationHandler;
 
+use Mockery\CountValidator\Exception;
 use ToolsetExtraExport as e;
+
 
 /**
  * Handles the migration of Customizer settings, theme_mods and arbitrary theme options (if supported).
  *
  * If invoked on the Customizer admin page, theoretically it might break it.
+ *
+ * Props to the Customizer Export/Import plugin created by the Beaver Builder team. Most of the implementation ideas
+ * has been taken from it.
  *
  * @since 1.0
  */
@@ -34,17 +39,6 @@ class Customizer implements IMigration_Handler {
 
 
         return e\Migration_Data_Nested_Array::from_array( $output );
-    }
-
-    /**
-     * @param e\IMigration_Data $data Correct migration data for the section
-     *
-     * @return \Toolset_Result|\Toolset_Result_Set
-     * @throws \InvalidArgumentException
-     */
-    function import( $data ) {
-        // TODO: Implement import() method.
-        throw new \RuntimeException( 'Not implemented.' );
     }
 
 
@@ -175,13 +169,14 @@ class Customizer implements IMigration_Handler {
         );
 
         // Don't save core options or widget or sidebar data.
-        $customizer_settings = array_filter( $customizer_settings, function( $key ) use( $core_options ) {
+        $customizer_settings = array_filter( $customizer_settings, function( $setting, $key ) use( $core_options ) {
             return (
-                false == stristr( $key, 'widget_' )
+                'option' == $setting->type
+                && false == stristr( $key, 'widget_' )
                 && false == stristr( $key, 'sidebars_' )
                 && ! in_array( $key, $core_options )
             );
-        }, ARRAY_FILTER_USE_KEY );
+        }, ARRAY_FILTER_USE_BOTH );
 
         /**
          * toolset_export_customizer_settings
@@ -260,6 +255,104 @@ class Customizer implements IMigration_Handler {
         }
 
         return $wp_customize;
+    }
+
+
+    /**
+     * @inheritdoc
+     *
+     * @param e\IMigration_Data $data Correct migration data for the section
+     *
+     * @return \Toolset_Result|\Toolset_Result_Set
+     * @throws \InvalidArgumentException
+     * @since 1.0
+     */
+    function import( $data ) {
+
+        $data = $data->to_array();
+        $theme_matches = ( toolset_getarr( $data, 'theme' ) == get_stylesheet() );
+        $template_matches = ( toolset_getarr( $data, 'template' ) == get_template() );
+
+        if( ! $theme_matches || ! $template_matches ) {
+            return new \Toolset_Result( false, __( 'The Customizer settings to be imported are not for the current theme.', 'toolset-ee' ) );
+        }
+
+        $results = new \Toolset_Result_Set();
+
+        $results->add( $this->import_custom_options( toolset_ensarr( toolset_getarr( $data, 'custom_options' ) ) ) );
+        $results->add( $this->import_customizer( toolset_ensarr( toolset_getarr( $data, 'customizer' ) ) ) );
+        $results->add( $this->import_theme_mods( toolset_ensarr( toolset_getarr( $data, 'theme_mods' ) ) ) );
+
+        // Finish the actions on Customizer.
+        do_action( 'customize_save_after', $this->get_customize_manager() );
+
+        return $results;
+    }
+
+
+    /**
+     * Import the custom theme options.
+     *
+     * The options need to be registered via the toolset_export_custom_theme_options also on import.
+     *
+     * @param array $custom_options
+     * @return \Toolset_Result|\Toolset_Result_Set
+     * @since 1.0
+     */
+    private function import_custom_options( $custom_options ) {
+        try {
+            $migration_handler = $this->get_custom_theme_option_migration_handler();
+
+            return $migration_handler->import( e\Migration_Data_Nested_Array::from_array( $custom_options ) );
+        } catch( Exception $e ) {
+            return new \Toolset_Result( $e );
+        }
+    }
+
+
+    /**
+     * Import Customizer options.
+     *
+     * @param $customizer_options
+     * @return \Toolset_Result
+     * @since 1.0
+     */
+    private function import_customizer( $customizer_options ) {
+
+        $wp_customize = $this->get_customize_manager();
+
+        foreach ( $customizer_options as $option_key => $option_value ) {
+            $option = new e\Customize_Setting( $wp_customize, $option_key );
+            $option->import( $option_value );
+        }
+
+        // Now persist the customization.
+        do_action( 'customize_save', $wp_customize );
+
+        return new \Toolset_Result( true );
+    }
+
+
+    /**
+     * Import Theme Mods.
+     *
+     * @param array $theme_mods
+     * @return \Toolset_Result
+     * @since 1.0
+     */
+    private function import_theme_mods( $theme_mods ) {
+
+        $wp_customize = $this->get_customize_manager();
+
+        foreach ( $theme_mods as $mod_name => $mod_value ) {
+
+            do_action( 'customize_save_' . $mod_name, $wp_customize );
+
+            set_theme_mod( $mod_name, $mod_value );
+        }
+
+        return new \Toolset_Result( true );
+
     }
 
 }

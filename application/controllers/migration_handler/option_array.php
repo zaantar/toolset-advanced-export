@@ -47,9 +47,12 @@ abstract class Option_Array implements IMigration_Handler {
 
 
 	/**
+     * @inheritdoc
+     *
 	 * @param e\IMigration_Data $migration_data
-	 *
-	 * @return mixed
+	 * @return \Toolset_Result_Set
+     * @throws \InvalidArgumentException
+     * @since 1.0
 	 */
 	function import( $migration_data ) {
 

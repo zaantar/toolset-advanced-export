@@ -9,6 +9,7 @@ return [
 	'ToolsetExtraExport\ApiHandlers\Export_Extra_Wordpress_Data_Json' => __DIR__ . '/controllers/api_handler/export_extra_wordpress_data_json.php',
 	'ToolsetExtraExport\ApiHandlers\Import_Extra_Wordpress_Data' => __DIR__ . '/controllers/api_handler/import_extra_wordpress_data.php',
 	'ToolsetExtraExport\Customized_Twig_Autoloader' => __DIR__ . '/controllers/customized_twig_autoloader.php',
+	'ToolsetExtraExport\Customize_Setting' => __DIR__ . '/models/customize_setting.php',
 	'ToolsetExtraExport\Data_Section' => __DIR__ . '/controllers/data_section.php',
 	'ToolsetExtraExport\Exporter' => __DIR__ . '/controllers/exporter.php',
 	'ToolsetExtraExport\Importer' => __DIR__ . '/controllers/importer.php',
