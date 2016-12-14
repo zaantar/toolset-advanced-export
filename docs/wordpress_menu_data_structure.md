@@ -51,7 +51,7 @@ WP_Post property                      | `$menu_item_data` key | Type      | Mean
 `menu_order`                          | menu-item-position    | numeric   | Order of the menu item (relative to its parent).
 `menu_item_parent`, `post_parent`*    | menu-item-parent-id   | numeric   | ID of the parent menu item or `0` for a root item.
 `object_id`                           | menu-item-object-id   | numeric   | ID of the object the menu item points to. Depends on `type`, `'custom'`: identical to db_id (and probably irrelevant), `'taxonomy'`: ID of the taxonomy, `'post_type'`: ID of the post.
-`object`                              | menu-item-object      | string    | Another reference to the object the menu item points to. Depends on `type`, `'custom'`: identical to db_id (and probably irrelevant), `'taxonomy'`: ID of the taxonomy, `'post_type'`: ID of the post.
+`object`                              | menu-item-object      | string    | Another reference to the object the menu item points to. Depends on `type`, `'custom'`: the string `'custom'`, `'taxonomy'`: taxonomy slug, `'post_type'`: post slug.
 `url`                                 | menu-item-url         | string    | URL to the menu item target. For custom links, it's the actual link, for taxonomy it's the link to the archive, for post it's a link to the post.
 `title`, `post_title`*                | menu-item-title       | string    | Title (display label) of the menu item.
 `target`                              | menu-item-target      | string    | The `target` attribute of the rendered link. WordPress GUI supports `'_blank'` or `''`. 

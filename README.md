@@ -16,6 +16,10 @@ Tested with WordPress 4.7.
 
 Currently, it runs only with development version of Toolset because of several [dependencies](docs/toolset_dependencies.md).
 
+One thing that needs to be handled if the plugin is to be used in a standalone 
+mode is the rewriting of imported URLs (for example, to header images in 
+Customizer settings) and importing the actual files.
+
 ### Browsers
 
 Recommended (but not required) browsers:  
@@ -26,4 +30,3 @@ Recommended (but not required) browsers:
 - IE 10+
 - Opera 15+
 - Safari 6.1+
-
