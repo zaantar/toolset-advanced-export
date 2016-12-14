@@ -49,8 +49,13 @@ class Customizer implements IMigration_Handler {
      * @since 1.0
      */
     private function export_theme_mods() {
-        $mods = get_theme_mods();
-        return ( is_array( $mods ) ? $mods : [] );
+        $mods = toolset_ensarr( get_theme_mods() );
+
+        // This references menus by ID and it would break on import.
+        // Menu locations migration will be handled in the Menu migration handler.
+        unset( $mods['nav_menu_locations'] );
+
+        return $mods;
     }
 
 
