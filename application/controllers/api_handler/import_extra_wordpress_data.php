@@ -19,9 +19,8 @@ use ToolsetExtraExport as e;
  */
 class Import_Extra_Wordpress_Data implements Api_Handler_Interface {
 
-    public function __construct() {
 
-    }
+    public function __construct() { }
 
     /**
      * @param array $arguments Original action/filter arguments.

@@ -23,14 +23,18 @@ class Migration_Handler_Factory {
 		$migration_handler = null;
 
 		switch( $section_name ) {
-			case Data_Section::APPEARANCE_MENU:
 			case Data_Section::APPEARANCE_WIDGETS:
 				// not implemented yet
 				break;
             case Data_Section::APPEARANCE_CUSTOMIZE:
-                return new MigrationHandler\Customizer();
+                $migration_handler = new MigrationHandler\Customizer();
+                break;
+            case Data_Section::APPEARANCE_MENU:
+                $migration_handler = new MigrationHandler\Menu();
+                break;
 			case Data_Section::SETTINGS_READING:
-				return new MigrationHandler\Settings_Reading();
+                $migration_handler = new MigrationHandler\Settings_Reading();
+                break;
 		}
 
 		/**

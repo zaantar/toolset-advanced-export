@@ -2,7 +2,6 @@
 
 namespace ToolsetExtraExport\MigrationHandler;
 
-use Mockery\CountValidator\Exception;
 use ToolsetExtraExport as e;
 
 
@@ -309,7 +308,7 @@ class Customizer implements IMigration_Handler {
             $migration_handler = $this->get_custom_theme_option_migration_handler();
 
             return $migration_handler->import( e\Migration_Data_Nested_Array::from_array( $custom_options ) );
-        } catch( Exception $e ) {
+        } catch( \Exception $e ) {
             return new \Toolset_Result( $e );
         }
     }

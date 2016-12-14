@@ -21,6 +21,7 @@ return [
 	'ToolsetExtraExport\MigrationHandler\Option_Array' => __DIR__ . '/controllers/migration_handler/option_array.php',
 	'ToolsetExtraExport\MigrationHandler\Option_Array_Custom' => __DIR__ . '/controllers/migration_handler/option_array_custom.php',
 	'ToolsetExtraExport\MigrationHandler\Option' => __DIR__ . '/controllers/migration_handler/option.php',
+	'ToolsetExtraExport\MigrationHandler\Menu' => __DIR__ . '/controllers/migration_handler/menu.php',
 	'ToolsetExtraExport\MigrationHandler\Post_Option' => __DIR__ . '/controllers/migration_handler/post_option.php',
 	'ToolsetExtraExport\MigrationHandler\Settings_Reading' => __DIR__ . '/controllers/migration_handler/settings_reading.php',
 	'ToolsetExtraExport\MigrationHandler\Customizer' => __DIR__ . '/controllers/migration_handler/customizer.php',
