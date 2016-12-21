@@ -30,3 +30,13 @@ Recommended (but not required) browsers:
 - IE 10+
 - Opera 15+
 - Safari 6.1+
+
+### Import limitations
+
+It is required and assumed that 
+
+ - the same theme is active on export and on import.
+ - posts, taxonomies and terms referenced in menus or settings are already imported, 
+ and that post GUIDs haven't been changed.
+ 
+If this is not the case, the import may turn out to be incomplete or downright broken.

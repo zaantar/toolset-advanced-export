@@ -15,6 +15,7 @@ return [
 	'ToolsetExtraExport\Importer' => __DIR__ . '/controllers/importer.php',
 	'ToolsetExtraExport\IMigration_Data' => __DIR__ . '/models/migration_data/interface.php',
 	'ToolsetExtraExport\Migration_Data_Nested_Array' => __DIR__ . '/models/migration_data/array.php',
+	'ToolsetExtraExport\Migration_Data_Portable_Post' => __DIR__ . '/models/migration_data/portable_post.php',
 	'ToolsetExtraExport\Migration_Data_Raw' => __DIR__ . '/models/migration_data/raw.php',
 	'ToolsetExtraExport\Migration_Handler_Factory' => __DIR__ . '/controllers/migration_handler_factory.php',
 	'ToolsetExtraExport\MigrationHandler\IMigration_Handler' => __DIR__ . '/controllers/migration_handler/interface.php',

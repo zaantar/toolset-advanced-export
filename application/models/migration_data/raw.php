@@ -11,7 +11,7 @@ namespace ToolsetExtraExport;
  */
 class Migration_Data_Raw implements IMigration_Data {
 
-    private $value;
+    protected $value;
 
 
     public function __construct( $value ) {

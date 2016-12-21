@@ -55,6 +55,8 @@ namespace ToolsetExtraExport\Utils {
     /**
      * Get additional information for identifying a post even after its ID changes.
      *
+     * todo Move this to Migration_Data_Portable_Post.
+     *
      * @param int $post_id
      * @return array Contains at least the "exists" key (boolean).
      * @since 1.0
@@ -78,5 +80,30 @@ namespace ToolsetExtraExport\Utils {
     }
 
 
+	/**
+	 * Get additional information for identifying a term even after its ID changes.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Slug of the taxonomy, where the term belongs.
+	 * @return array Contains at least the "exists" key (boolean).
+	 * @since 1.0
+	 */
+    function get_portable_term_data( $term_id, $taxonomy ) {
+
+    	$term = get_term( $term_id, $taxonomy );
+    	if( null == $term || $term instanceof \WP_Error ) {
+    		return [ 'exists' => false ];
+	    }
+
+	    $portable_term_data = [
+	    	'exists' => true,
+		    'original_id' => $term->term_id,
+		    'name' => $term->name,
+		    'slug' => $term->slug,
+		    'taxonomy' => $term->taxonomy
+	    ];
+
+    	return $portable_term_data;
+    }
 
 }
