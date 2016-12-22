@@ -10,7 +10,7 @@ Text Domain: toolset-ee
 Domain Path: /languages
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-GitHub Plugin URI: zaantar/tcl-status
+GitHub Plugin URI: zaantar/wordpress-extra-export
 */
 
 
