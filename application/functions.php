@@ -33,6 +33,77 @@ namespace {
 
     }
 
+
+	if( !function_exists( 'toolset_getnest' ) ) {
+
+		/**
+		 * Get a value from nested associative array.
+		 *
+		 * This function will try to traverse a nested associative array by the set of keys provided.
+		 *
+		 * E.g. if you have $source = array( 'a' => array( 'b' => array( 'c' => 'my_value' ) ) ) and want to reach 'my_value',
+		 * you need to write: $my_value = wpcf_getnest( $source, array( 'a', 'b', 'c' ) );
+		 *
+		 * @param mixed|array $source The source array.
+		 * @param string[] $keys Keys which will be used to access the final value.
+		 * @param null|mixed $default Default value to return when the keys cannot be followed.
+		 *
+		 * @return mixed|null Value in the nested structure defined by keys or default value.
+		 *
+		 * @since 1.0
+		 */
+		function toolset_getnest( &$source, $keys = array(), $default = null ) {
+
+			$current_value = $source;
+
+			// For detecting if a value is missing in a sub-array, we'll use this temporary object.
+			// We cannot just use $default on every level of the nesting, because if $default is an
+			// (possibly nested) array itself, it might mess with the value retrieval in an unexpected way.
+			$missing_value = new stdClass();
+
+			while( ! empty( $keys ) ) {
+				$current_key = array_shift( $keys );
+				$is_last_key = empty( $keys );
+
+				$current_value = toolset_getarr( $current_value, $current_key, $missing_value );
+
+				if ( $is_last_key ) {
+					// Apply given default value.
+					if( $missing_value === $current_value ) {
+						return $default;
+					} else {
+						return $current_value;
+					}
+				} elseif ( ! is_array( $current_value ) ) {
+					return $default;
+				}
+			}
+
+			return $default;
+		}
+
+	}
+
+
+	if( !function_exists( 'toolset_ensarr' ) ) {
+
+		/**
+		 * Ensure that a variable is an array.
+		 *
+		 * @param mixed $array The original value.
+		 * @param array $default Default value to use when no array is provided. This one should definitely be an array,
+		 *     otherwise the function doesn't make much sense.
+		 *
+		 * @return array The original array or a default value if no array is provided.
+		 *
+		 * @since 1.9
+		 */
+		function toolset_ensarr( $array, $default = array() ) {
+			return ( is_array( $array ) ? $array : $default );
+		}
+
+	}
+
 }
 
 

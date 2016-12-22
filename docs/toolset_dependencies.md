@@ -6,10 +6,10 @@ handled properly.
 
 - `Toolset_Result` and `Toolset_Result_Set` are being used throughout the code.
 - The `toolset-utils` script is needed for `WPV_Toolset.Utils.editor_decode64()`. 
-- `toolset_ensarr()` is used on several occasions.
 
 ## Solved dependencies
 
-- `toolset_getarr()` has an alternative definition in `functions.php`.
+- `toolset_getarr()`, `toolset_ensarr()` and `toolset_getnest()` have an alternative 
+  definition in `functions.php`.
 - Several dependencies when extending the Toolset Export / Import page. 
-Not a problem since this page doesn't show without Toolset.
+  Not a problem since this page doesn't show without Toolset.
