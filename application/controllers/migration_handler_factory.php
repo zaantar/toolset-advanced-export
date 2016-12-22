@@ -24,7 +24,7 @@ class Migration_Handler_Factory {
 
 		switch( $section_name ) {
 			case Data_Section::APPEARANCE_WIDGETS:
-				// not implemented yet
+				$migration_handler = new MigrationHandler\Widgets();
 				break;
             case Data_Section::APPEARANCE_CUSTOMIZE:
                 $migration_handler = new MigrationHandler\Customizer();
