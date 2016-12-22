@@ -133,8 +133,8 @@ If this is not the case, the import may turn out to be incomplete or downright b
 
 ## Credits
 
-The relevant part was, with the deepest gratitude to its authors, taken from the 
-[Widget Importer && Exporter](https://wordpress.org/plugins/widget-importer-exporter/) 
+The relevant part of the widget export was, with the deepest gratitude to its authors, taken from the 
+[Widget Importer & Exporter](https://wordpress.org/plugins/widget-importer-exporter/) 
 plugin with only very little changes.
 
 Made with :heart: for [Toolset](http://toolset.com) and [OnTheGoSystems](http://onthegosystems.com).
