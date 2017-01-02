@@ -50,7 +50,7 @@ abstract class Page_Import_Export {
 
 		$twig = $this->get_twig_environment();
 
-		$output = $twig->render( 'import_export.twig', $context );
+		$output = $twig->render( 'both.twig', $context );
 
 		echo $output;
 	}

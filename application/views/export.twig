@@ -1,4 +1,7 @@
-<div id="toolset_extra_export_wrap">
+{% extends "base.twig" %}
+
+{% block body %}
+
     <p>{{ __( 'This section allows you to export various settings which are not covered by the WordPress XML export. The purpose of exporting and importing these settings is to allow users of your Toolset-based theme to receive an exact copy of your site without having to set options manually.' ) }}</p>
     <p><a href="{# todo add missing link #}">{{ __( 'How to build Toolset-based themes' ) }}</a></p>
 
@@ -36,8 +39,6 @@
         <span class="spinner" data-bind="style: { visibility: (isExportInProgress() ? 'visible' : 'hidden') }"></span>
     </p>
 
-    <script id="toolset_extra_export_model_data" type="text/plain">{{ js_model_data }}</script>
-
     <p data-bind="text: exportOutput"></p>
 
-</div>
+{% endblock %}
