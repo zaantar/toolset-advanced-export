@@ -17,7 +17,7 @@ jQuery(document).ready(function() {
 
         var self = this;
 
-        const rootElementId = 'toolset_extra_export_wrap';
+        const rootElementSelector = '.toolset_extra_export_wrap';
         const modelDataElementId = 'toolset_extra_export_model_data';
 
         var vm = function(preselectedSections) {
@@ -142,7 +142,15 @@ jQuery(document).ready(function() {
             self.exportNonce = self.modelData['ajax_nonce'];
 
             // Fire in the hole!
-            ko.applyBindings(new vm(self.modelData['preselected_sections'] || []), document.getElementById(rootElementId));
+            //
+            // We may have multiple roots because on the Toolset Export / Import page, the import and
+            // export sections are rendered individually, reusing the same Twig template. This is required by
+            // the page GUI coming from Toolset.
+            var viewModel = new vm(self.modelData['preselected_sections'] || []);
+            $(rootElementSelector).each(function(index, rootElement) {
+                ko.applyBindings(viewModel, rootElement);
+            });
+
         };
 
         init();

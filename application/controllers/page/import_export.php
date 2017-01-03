@@ -16,6 +16,8 @@ abstract class Page_Import_Export {
 
 	protected static $instance;
 
+	private $is_js_model_data_rendered = false;
+
 
 	/**
 	 * @return Page_Import_Export
@@ -43,14 +45,21 @@ abstract class Page_Import_Export {
 
 	/**
 	 * Render the page's markup.
+	 *
+	 * @param string $what Determine what should be rendered: 'import'|'export'|'both'
+	 * @since 1.0
 	 */
-	public function render() {
+	public function render( $what = 'both' ) {
 
 		$context = $this->build_twig_context();
 
 		$twig = $this->get_twig_environment();
 
-		$output = $twig->render( 'both.twig', $context );
+		if( ! in_array( $what, ['import', 'export', 'both' ] ) ) {
+			$what = 'both';
+		}
+
+		$output = $twig->render( "{$what}.twig", $context );
 
 		echo $output;
 	}
@@ -63,15 +72,21 @@ abstract class Page_Import_Export {
 	 */
 	protected function build_twig_context() {
 
-        $js_model_data = [
-            'preselected_sections' => e\Data_Section::values(),
-            'ajax_nonce' => wp_create_nonce( e\Ajax::EXPORT_NONCE )
-        ];
-
 		$context = [
 			'sections' => e\Data_Section::labels(),
-            'js_model_data' => base64_encode( wp_json_encode( $js_model_data ) )
 		];
+
+		// We need this only once even if the template is rendered twice.
+		if( ! $this->is_js_model_data_rendered ) {
+			$this->is_js_model_data_rendered = true;
+
+			$js_model_data = [
+				'preselected_sections' => e\Data_Section::values(),
+				'ajax_nonce' => wp_create_nonce( e\Ajax::EXPORT_NONCE )
+			];
+
+			$context['js_model_data'] = base64_encode( wp_json_encode( $js_model_data ) );
+		}
 
 		return $context;
 	}
