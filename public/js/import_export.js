@@ -19,6 +19,7 @@ jQuery(document).ready(function() {
 
         const rootElementSelector = '.toolset_extra_export_wrap';
         const modelDataElementId = 'toolset_extra_export_model_data';
+        const importFileElementId = 'toolset_extra_export_import_file';
 
         var vm = function(preselectedSections) {
             var vm = this;
@@ -29,14 +30,14 @@ jQuery(document).ready(function() {
 
                 vm.isExportInProgress(true);
                 vm.downloadLink('');
-                vm.errorMessage('');
+                vm.exportErrorMessage('');
 
                 // Initiate the export request
                 var exportRequest = $.post({
                     url: ajaxurl,
                     data: {
                         action: 'toolset_ee_export',
-                        wpnonce: self.exportNonce,
+                        wpnonce: self.importExportNonce,
                         selected_sections: vm.selectedSections(),
                         export_method: (isFileSaverSupported() ? 'saveas' : 'link')
                     }
@@ -44,9 +45,9 @@ jQuery(document).ready(function() {
 
                 var fail = function(result) {
                     if(_.has(result, 'data') && _.has(result.data, 'message')) {
-                        vm.errorMessage(result.data.message);
+                        vm.exportErrorMessage(result.data.message);
                     } else {
-                        vm.errorMessage('An unknown error has happened.');
+                        vm.exportErrorMessage('An unknown error has happened.');
                     }
                     console.log(result)
                 };
@@ -85,8 +86,76 @@ jQuery(document).ready(function() {
 
             vm.downloadLink = ko.observable('');
 
-            vm.errorMessage = ko.observable('');
+            vm.exportErrorMessage = ko.observable('');
 
+            vm.importRequirements = ko.observableArray();
+
+            vm.isImportPossible = ko.pureComputed(function() {
+                return (vm.importRequirements().length == 3 && vm.importFileName().length > 0 );
+            });
+
+            vm.importErrorMessage = ko.observable('');
+
+            vm.isImportInProgress = ko.observable(false);
+
+            vm.importOutput = ko.observable();
+
+            vm.importFileName = ko.observable('');
+
+            vm.importFileData = ko.observable();
+
+            vm.onImportClick = function() {
+
+                vm.isImportInProgress(true);
+                vm.importOutput('Uploading the import file...');
+
+                var fail = function(result) {
+                    if(_.has(result, 'data') && _.has(result.data, 'message')) {
+                        vm.importErrorMessage(result.data.message);
+                    } else {
+                        vm.importErrorMessage('An unknown error has happened.');
+                    }
+                    console.log(result);
+                    vm.isImportInProgress(false);
+                };
+
+                var fileData = document.getElementById(importFileElementId).files[0];
+
+                var formData = new FormData();
+                formData.append('action', 'upload-attachment');
+                formData.append('async-upload', fileData);
+                formData.append('name', vm.importFileName());
+                formData.append('_wpnonce', self.uploadNonce);
+
+                $.ajax({
+                    url: self.uploadUrl,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function(response) {
+                        if(response.success) {
+                            vm.importOutput('Processing the import file...');
+
+                            return;
+
+                            // todo :
+                            $.post({
+                                url: ajaxurl,
+                                data: {
+                                    action: 'toolset_ee_import',
+                                    wpnonce: self.importExportNonce,
+                                    import_file_url: response.data.url
+                                }
+                            })
+                        } else {
+                            fail(response);
+                        }
+                    },
+                    fail: fail
+                })
+            }
         };
 
 
@@ -139,7 +208,9 @@ jQuery(document).ready(function() {
 
             // Retrieve and process data passed from PHP
             self.modelData = getModelData();
-            self.exportNonce = self.modelData['ajax_nonce'];
+            self.importExportNonce = self.modelData['ajax_nonce'];
+            self.uploadNonce = self.modelData['upload_nonce'];
+            self.uploadUrl = self.modelData['upload_url'];
 
             // Fire in the hole!
             //

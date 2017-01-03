@@ -2,6 +2,48 @@
 
 {% block body %}
 
+    <p>{{ __( 'Here you can import the settings exported from another site. Please make sure that you satisfy these conditions, which are enforced by WordPress:' ) }}</p>
+    <p>
+        <label>
+            <input type="checkbox" data-bind="checked: importRequirements" value="same_theme_active"/>
+            {{ __( 'The active theme is the same as on the site where the export comes from.') }}
+        </label>
+    </p>
+    <p>
+        <label>
+            <input type="checkbox" data-bind="checked: importRequirements" value="same_plugins_active"/>
+            {{ __( 'The same plugins that register active widgets are active on export and on import.') }}
+        </label>
+    </p>
+    <p>
+        <label>
+            <input type="checkbox" data-bind="checked: importRequirements" value="relevant_content_imported"/>
+            {{ __( 'Posts, taxonomies and terms referenced in menus or settings are already imported, and that post GUIDs haven\'t been changed.' ) }}
+        </label>
+    </p>
+
+    <div class="toolset-advanced-setting">
+        <p>
+            {{ __( 'Upload a .zip file from your computer:') }}
+        </p>
+        <input type="file" id="toolset_extra_export_import_file" data-bind="file: {data: importFileData, name: importFileName}" />
+    </div>
 
 
+    <p class="toolset-update-button-wrap">
+
+        <span class="toolset-alert toolset-alert-error"
+              style="float: left; margin-bottom: 5px;"
+              data-bind="text: importErrorMessage, visible: importErrorMessage().length > 0"
+        ></span>
+
+        <button
+                type="submit" class="button-primary form-submit submit"
+                data-bind="click: onImportClick, enable: ( isImportPossible() && ! isImportInProgress() )"
+        >{{ __( 'Import' ) }}</button>
+
+        <span class="spinner" data-bind="style: { visibility: (isImportInProgress() ? 'visible' : 'hidden') }"></span>
+    </p>
+
+    <p data-bind="text: importOutput"></p>
 {% endblock %}

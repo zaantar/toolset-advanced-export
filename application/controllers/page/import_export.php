@@ -82,7 +82,11 @@ abstract class Page_Import_Export {
 
 			$js_model_data = [
 				'preselected_sections' => e\Data_Section::values(),
-				'ajax_nonce' => wp_create_nonce( e\Ajax::EXPORT_NONCE )
+				'ajax_nonce' => wp_create_nonce( e\Ajax::EXPORT_NONCE ),
+
+				// Required for the async-upload.php
+				'upload_nonce' => wp_create_nonce( 'media-form' ),
+				'upload_url' => admin_url( 'async-upload.php' )
 			];
 
 			$context['js_model_data'] = base64_encode( wp_json_encode( $js_model_data ) );
@@ -152,10 +156,17 @@ abstract class Page_Import_Export {
             '1.3.3'
         );
 
+        wp_register_script(
+        	'knockout-file-bind',
+	        TOOLSET_EXTRA_EXPORT_ABSURL . '/public/knockout-file-bind.js',
+	        [ 'knockout' ],
+	        TOOLSET_EXTRA_EXPORT_VERSION
+        );
+
         wp_enqueue_script(
             'toolset_extra_export_page',
             TOOLSET_EXTRA_EXPORT_ABSURL . '/public/js/import_export.js',
-            [ 'jquery', 'knockout', 'underscore', 'toolset-utils', 'filesaver' ],
+            [ 'jquery', 'knockout', 'underscore', 'toolset-utils', 'filesaver', 'knockout-file-bind' ],
             TOOLSET_EXTRA_EXPORT_VERSION
         );
     }
