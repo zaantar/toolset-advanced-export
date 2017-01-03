@@ -85,7 +85,7 @@ class Exporter {
 
         $output = [];
         foreach( $raw_data as $section_name => $raw_section ) {
-            $output[ $section_name ] = $raw_section->to_json();
+            $output[ $section_name ] = $raw_section->to_array();
         }
 
         $output = json_encode( $output );

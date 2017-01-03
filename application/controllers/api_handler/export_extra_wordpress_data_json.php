@@ -31,7 +31,7 @@ class Export_Extra_Wordpress_Data_Json extends Export_Extra_Wordpress_Data_Raw {
         $output = [];
         foreach( $raw_data as $section_name => $raw_section ) {
             try {
-                $output[ $section_name ] = $raw_section->to_json();
+                $output[ $section_name ] = $raw_section->to_array();
             } catch( \Exception $e ) {
                 // Just fail without killing anyone.
                 return null;
