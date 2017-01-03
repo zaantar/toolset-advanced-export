@@ -32,9 +32,16 @@ class Ajax {
 
 
     private function register_callbacks() {
-
         add_action( 'wp_ajax_toolset_ee_export', [ $this, 'export' ] );
+        add_action( 'wp_ajax_toolset_ee_import', [ $this, 'import' ] );
+    }
 
+
+    private function verify_nonce() {
+	    if( ! wp_verify_nonce( toolset_getarr( $_POST, 'wpnonce' ), self::EXPORT_NONCE ) ) {
+		    wp_send_json_error( [ 'message' => __( 'Invalid nonce', 'toolset-ee' ) ] );
+		    die;
+	    };
     }
 
 
@@ -52,10 +59,7 @@ class Ajax {
      */
     public function export() {
 
-        if( ! wp_verify_nonce( toolset_getarr( $_POST, 'wpnonce' ), self::EXPORT_NONCE ) ) {
-            wp_send_json_error( [ 'message' => __( 'Invalid nonce', 'toolset-ee' ) ] );
-            die;
-        };
+        $this->verify_nonce();
 
         try{
 
@@ -101,6 +105,61 @@ class Ajax {
         }
 
         die;
+    }
+
+
+	/**
+	 * toolset_ee_import callback
+	 *
+	 * Grabs a ZIP file previously uploaded as an attachment, uses the API hook to import it and deletes it after.
+	 *
+	 * Expects following POST variables:
+	 * - wpnonce: A valid toolset_ee_export nonce.
+	 * - attachment_id: ID of the attachment with the import zip file.
+	 *
+	 * @since 1.0
+	 */
+    public function import() {
+
+    	$this->verify_nonce();
+
+	    try{
+
+	    	// Get the path and check the file exists
+	    	$zip_attachment_id = (int) toolset_getarr( $_POST, 'attachment_id' );
+			$zip_path = get_attached_file( $zip_attachment_id );
+
+			if( false == $zip_path || ! file_exists( $zip_path ) ) {
+				throw new \InvalidArgumentException( sprintf(
+					__( 'The file was not correctly uploaded. Cannot locate the attachment %d in "%s".', 'toolset-ee' ),
+					$zip_attachment_id,
+					$zip_path
+				) );
+			}
+
+			$results = new \Toolset_Result_Set();
+
+			$results->add(
+				apply_filters( 'toolset_import_extra_wordpress_data_zip', false, $zip_path, [ 'all' ] )
+			);
+
+			// Clean up always
+		    wp_delete_attachment( $zip_attachment_id );
+
+	    	wp_send_json([
+	    		'success' => $results->is_complete_success(),
+			    'data' => [
+				    'message' => wp_kses_post( $results->concat_messages( '<br />' ) )
+			    ]
+		    ]);
+
+	    } catch( \Exception $e ) {
+		    wp_send_json_error( [
+			    'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-ee' ), $e->getMessage() )
+		    ] );
+	    }
+
+	    die;
     }
 
 }

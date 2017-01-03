@@ -41,11 +41,13 @@ class Importer {
      */
     public function import_array( $data ) {
 
+	    $results = new \Toolset_Result_Set();
+
         if( !is_array( $data ) ) {
-            throw new \InvalidArgumentException();
+        	$results->add( false, __( 'Import data have an incorrect type.' ) );
+            return $results;
         }
 
-        $results = new \Toolset_Result_Set();
         foreach( $this->sections_to_import as $section_name ) {
 
             // Get a dedicated handler for the section.

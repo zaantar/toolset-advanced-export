@@ -8,6 +8,8 @@ Toolset.ExtraExport = Toolset.ExtraExport || {};
  *
  * Finds the relevant root element, creates a viewmodel and applies knockout bindings on it.
  *
+ * todo: localize
+ *
  * @param $ jQuery instance.
  * @since 1.0
  */
@@ -32,18 +34,7 @@ jQuery(document).ready(function() {
                 vm.downloadLink('');
                 vm.exportErrorMessage('');
 
-                // Initiate the export request
-                var exportRequest = $.post({
-                    url: ajaxurl,
-                    data: {
-                        action: 'toolset_ee_export',
-                        wpnonce: self.importExportNonce,
-                        selected_sections: vm.selectedSections(),
-                        export_method: (isFileSaverSupported() ? 'saveas' : 'link')
-                    }
-                });
-
-                var fail = function(result) {
+                var handleExportFailure = function(result) {
                     if(_.has(result, 'data') && _.has(result.data, 'message')) {
                         vm.exportErrorMessage(result.data.message);
                     } else {
@@ -52,10 +43,22 @@ jQuery(document).ready(function() {
                     console.log(result)
                 };
 
+                // Initiate the export request
+                var exportRequest = $.post({
+                    url: ajaxurl,
+                    data: {
+                        action: 'toolset_ee_export',
+                        wpnonce: self.importExportNonce,
+                        selected_sections: vm.selectedSections(),
+                        export_method: (isFileSaverSupported() ? 'saveas' : 'link')
+                    },
+                    error: handleExportFailure
+                });
+
                 exportRequest.success(function(result) {
 
                     if(!_.has(result.data, 'output')) {
-                        fail(result);
+                        handleExportFailure(result);
                         return;
                     }
 
@@ -69,9 +72,9 @@ jQuery(document).ready(function() {
                         vm.downloadLink(result.data.link);
                     }
 
-                }).fail(function(result) {
-                    fail(result);
-                }).always(function() {
+                });
+
+                exportRequest.always(function() {
                     vm.isExportInProgress(false);
                 });
             };
@@ -82,14 +85,14 @@ jQuery(document).ready(function() {
 
             vm.isExportInProgress = ko.observable(false);
 
-            vm.exportOutput = ko.observable();
-
             vm.downloadLink = ko.observable('');
 
             vm.exportErrorMessage = ko.observable('');
 
+            /** Values representing confirmation checkboxes before import. */
             vm.importRequirements = ko.observableArray();
 
+            /** All three checkboxes must be checked and a file selected. */
             vm.isImportPossible = ko.pureComputed(function() {
                 return (vm.importRequirements().length == 3 && vm.importFileName().length > 0 );
             });
@@ -104,57 +107,99 @@ jQuery(document).ready(function() {
 
             vm.importFileData = ko.observable();
 
-            vm.onImportClick = function() {
+            /**
+             * Deal with any sort of AJAX call failure on import.
+             */
+            var handleImportFailure = function(result) {
+                if(_.has(result, 'data') && _.has(result.data, 'message')) {
+                    vm.importErrorMessage(result.data.message);
+                } else {
+                    vm.importErrorMessage('An unknown error has happened.');
+                }
+                vm.isImportInProgress(false);
+                vm.importOutput('');
+            };
 
-                vm.isImportInProgress(true);
-                vm.importOutput('Uploading the import file...');
 
-                var fail = function(result) {
-                    if(_.has(result, 'data') && _.has(result.data, 'message')) {
-                        vm.importErrorMessage(result.data.message);
-                    } else {
-                        vm.importErrorMessage('An unknown error has happened.');
+            /**
+             * Import a file that is already uploaded as a WordPress attachment.
+             *
+             * @param attachmentId
+             */
+            var makeImportCall = function(attachmentId) {
+                $.post({
+                    url: ajaxurl,
+                    data: {
+                        action: 'toolset_ee_import',
+                        wpnonce: self.importExportNonce,
+                        attachment_id: attachmentId
+                    },
+                    success: function(response) {
+                        if(_.has(response, 'success') && response.success) {
+                            vm.isImportInProgress(false);
+                        } else {
+                            handleImportFailure(response);
+                        }
+                    },
+                    error: handleImportFailure,
+                    statusCode: {
+                        502: handleImportFailure
                     }
-                    console.log(result);
-                    vm.isImportInProgress(false);
-                };
+                });
+            };
 
-                var fileData = document.getElementById(importFileElementId).files[0];
 
+            /**
+             * Upload a file via WordPress media async upload mechanism.
+             *
+             * @see https://www.sitepoint.com/enabling-ajax-file-uploads-in-your-wordpress-plugin/
+             *
+             * @param fileData Raw file data
+             * @param successCalback Function that will be called when the upload is successfull.
+             *     It will get an attachment ID as a first parameter.
+             */
+            var uploadFile = function(fileData, successCalback) {
                 var formData = new FormData();
                 formData.append('action', 'upload-attachment');
                 formData.append('async-upload', fileData);
                 formData.append('name', vm.importFileName());
                 formData.append('_wpnonce', self.uploadNonce);
 
-                $.ajax({
+                var uploadRequest = $.ajax({
                     url: self.uploadUrl,
                     data: formData,
                     processData: false,
                     contentType: false,
                     dataType: 'json',
                     type: 'POST',
-                    success: function(response) {
-                        if(response.success) {
-                            vm.importOutput('Processing the import file...');
+                    error: handleImportFailure
+                });
 
-                            return;
+                uploadRequest.success(function(response) {
+                    if(response.success) {
+                        vm.importOutput('Processing the import file...');
+                        successCalback(response.data.id);
+                    } else {
+                        handleImportFailure(response);
+                    }
+                });
+            };
 
-                            // todo :
-                            $.post({
-                                url: ajaxurl,
-                                data: {
-                                    action: 'toolset_ee_import',
-                                    wpnonce: self.importExportNonce,
-                                    import_file_url: response.data.url
-                                }
-                            })
-                        } else {
-                            fail(response);
-                        }
-                    },
-                    fail: fail
-                })
+
+            /**
+             * Perform the import.
+             *
+             * First, upload the import file and then make another call to import its contents.
+             */
+            vm.onImportClick = function() {
+
+                vm.isImportInProgress(true);
+                vm.importErrorMessage('');
+                vm.importOutput('Uploading the import file...');
+
+                var fileData = document.getElementById(importFileElementId).files[0];
+
+                uploadFile(fileData, makeImportCall);
             }
         };
 

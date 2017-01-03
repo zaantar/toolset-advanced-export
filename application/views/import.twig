@@ -34,7 +34,11 @@
 
         <span class="toolset-alert toolset-alert-error"
               style="float: left; margin-bottom: 5px;"
-              data-bind="text: importErrorMessage, visible: importErrorMessage().length > 0"
+              data-bind="html: importErrorMessage, visible: importErrorMessage().length > 0"
+        ></span>
+
+        <span style="float: left; margin-bottom: 5px; display: block; "
+              data-bind="html: importOutput"
         ></span>
 
         <button
@@ -45,5 +49,4 @@
         <span class="spinner" data-bind="style: { visibility: (isImportInProgress() ? 'visible' : 'hidden') }"></span>
     </p>
 
-    <p data-bind="text: importOutput"></p>
 {% endblock %}
