@@ -137,6 +137,7 @@ jQuery(document).ready(function() {
                     success: function(response) {
                         if(_.has(response, 'success') && response.success) {
                             vm.isImportInProgress(false);
+                            vm.importOutput(response.data.message);
                         } else {
                             handleImportFailure(response);
                         }

@@ -215,9 +215,8 @@ class Menu implements IMigration_Handler {
             $menu_name = toolset_getarr( $menu_data, 'name' );
             $old_menu_id = toolset_getarr( $menu_data, 'id' );
 
-            // Not providing a slug on purpose, wp_insert_term might update existing term if
-            // there's a conflict.
-            $term_creation_result = wp_insert_term( $menu_name, 'nav_menu' );
+	        $unique_menu_slug = $this->get_unique_menu_slug( sanitize_title( $menu_name ) );
+	        $term_creation_result = wp_insert_term( $menu_name, 'nav_menu', [ 'slug' => $unique_menu_slug ] );
 
             if( ! $term_creation_result instanceof \WP_Error ) {
 	            $menu_id_map[ $old_menu_id ] = $term_creation_result['term_id'];
@@ -231,6 +230,34 @@ class Menu implements IMigration_Handler {
         }, [] );
 
         return [ $results, $menu_id_map ];
+    }
+
+
+	/**
+	 * Generate an unique slug for a menu.
+	 *
+	 * @param string $term_slug Candidate value. If not unique, a numeric prefix will be appended / increased.
+	 * @return string Unique term slug for the nav_menu taxonomy.
+	 * @since 1.0
+	 */
+    private function get_unique_menu_slug( $term_slug ) {
+    	$slug_candidate = $term_slug;
+
+    	while( term_exists( $slug_candidate ) ) {
+    		$slug_parts = explode( '-', $slug_candidate );
+
+    		$last_slug_part_index = count( $slug_parts ) - 1;
+    		$last_slug_part = $slug_parts[ $last_slug_part_index ];
+
+    		if( is_numeric( $last_slug_part ) ) {
+    			$slug_parts[ $last_slug_part_index ] = $last_slug_part + 1;
+    			$slug_candidate = implode( '-', $slug_parts );
+		    } else {
+    			$slug_candidate .= '-2';
+		    }
+	    }
+
+	    return $slug_candidate;
     }
 
 
@@ -398,6 +425,12 @@ class Menu implements IMigration_Handler {
             	break;
 
             case 'post_type_archive':
+		        $result = [
+		        	'id' => '', // Ignored for this item type.
+			        'object_type' => toolset_getarr( $item, 'object' )
+		        ];
+		        break;
+
             default:
                 $result = new \Toolset_Result( false, sprintf( __( 'Unknown type of a menu item target "%s".', 'toolset-ee' ), sanitize_text_field( $menu_item_type ) ) );
                 break;
