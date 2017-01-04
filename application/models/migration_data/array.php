@@ -19,6 +19,9 @@ class Migration_Data_Nested_Array implements IMigration_Data {
 	 * @param array $data
 	 */
 	protected function __construct( $data ) {
+		if( ! is_array( $data ) ) {
+			throw new \InvalidArgumentException();
+		}
 		$this->data = $data;
 	}
 
@@ -50,6 +53,11 @@ class Migration_Data_Nested_Array implements IMigration_Data {
      * @throws \InvalidArgumentException
 	 */
 	public static function from_json( $json_input ) {
+
+		if( ! is_string( $json_input ) ) {
+			throw new \InvalidArgumentException( 'Not a JSON string.' );
+		}
+
 		$input = json_decode( $json_input, true );
 
 		if( json_last_error() != JSON_ERROR_NONE ) {

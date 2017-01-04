@@ -18,7 +18,7 @@ abstract class Test_Case extends \WP_UnitTestCase {
 	}
 
 
-	public function assertAssociativeArrayEquals( $expected, $actual, $message, $depth = 10 ) {
+	public function assertAssociativeArrayEquals( $expected, $actual, $message = '', $depth = 10 ) {
         $this->assertEquals( $expected, $actual, $message, 0, $depth, true );
 
         $this->assertArrayKeysMatch( $expected, $actual );

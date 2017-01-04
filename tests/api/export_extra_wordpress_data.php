@@ -3,7 +3,7 @@
 namespace ToolsetExtraExport\Tests\Api;
 use ToolsetExtraExport\Tests as tests;
 
-class Export_Extra_Wordpress_Data extends tests\Test_Case {
+class Test_Export_Extra_Wordpress_Data extends tests\Test_Case {
 
     const FILTER_NAME = 'toolset_export_extra_wordpress_data';
 

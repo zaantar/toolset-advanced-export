@@ -10,6 +10,9 @@
         <testsuite name="api">
             <directory suffix=".php">./tests/api</directory>
         </testsuite>
+        <testsuite name="application">
+            <directory suffix=".php">./tests/application</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
