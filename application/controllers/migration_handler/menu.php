@@ -552,7 +552,7 @@ class Menu implements IMigration_Handler {
 	 * This assumes that the theme is the same as on export.
 	 *
 	 * @param array $locations Location slug => old menu ID
-	 * @param array $menu_id_map Old menu ID ==> new menu ID
+	 * @param array $menu_id_map Old menu ID => new menu ID
 	 * @return \Toolset_Result
 	 * @since 1.0
 	 */
