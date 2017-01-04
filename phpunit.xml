@@ -11,4 +11,12 @@
             <directory suffix=".php">./tests/api</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./application</directory>
+            <exclude>
+                <file>./application/models/customize_setting.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

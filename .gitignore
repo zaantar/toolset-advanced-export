@@ -3,3 +3,4 @@
 *.iml
 
 vendor
+tests/coverage
