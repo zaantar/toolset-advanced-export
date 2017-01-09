@@ -70,7 +70,7 @@ abstract class Page_Import_Export {
 	 *
 	 * @return array
 	 */
-	protected function build_twig_context() {
+	private function build_twig_context() {
 
 		$context = [
 			'sections' => e\Data_Section::labels(),
@@ -86,13 +86,26 @@ abstract class Page_Import_Export {
 
 				// Required for the async-upload.php
 				'upload_nonce' => wp_create_nonce( 'media-form' ),
-				'upload_url' => admin_url( 'async-upload.php' )
+				'upload_url' => admin_url( 'async-upload.php' ),
+
+				// Since we're already passing this to JS, no need for a separate wp_localize_script call and
+				// another global JS variable.
+				'l10n' => $this->localize_script()
 			];
 
 			$context['js_model_data'] = base64_encode( wp_json_encode( $js_model_data ) );
 		}
 
 		return $context;
+	}
+
+
+	private function localize_script() {
+		return [
+			'unknown_error' => __( 'An unknown error has happened.', 'toolset-ee' ),
+			'processing_import_file' => __( 'Processing the import file...', 'toolset-ee' ),
+			'uploading_import_file' => __( 'Uploading the import file...', 'toolset-ee' )
+		];
 	}
 
 

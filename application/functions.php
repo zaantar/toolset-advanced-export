@@ -126,8 +126,6 @@ namespace ToolsetExtraExport\Utils {
     /**
      * Get additional information for identifying a post even after its ID changes.
      *
-     * todo Move this to Migration_Data_Portable_Post.
-     *
      * @param int $post_id
      * @return array Contains at least the "exists" key (boolean).
      * @since 1.0

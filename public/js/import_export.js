@@ -8,8 +8,6 @@ Toolset.ExtraExport = Toolset.ExtraExport || {};
  *
  * Finds the relevant root element, creates a viewmodel and applies knockout bindings on it.
  *
- * todo: localize
- *
  * @param $ jQuery instance.
  * @since 1.0
  */
@@ -38,7 +36,7 @@ jQuery(document).ready(function() {
                     if(_.has(result, 'data') && _.has(result.data, 'message')) {
                         vm.exportErrorMessage(result.data.message);
                     } else {
-                        vm.exportErrorMessage('An unknown error has happened.');
+                        vm.exportErrorMessage(self.l10n['unknown_error']);
                     }
                     console.log(result)
                 };
@@ -114,7 +112,7 @@ jQuery(document).ready(function() {
                 if(_.has(result, 'data') && _.has(result.data, 'message')) {
                     vm.importErrorMessage(result.data.message);
                 } else {
-                    vm.importErrorMessage('An unknown error has happened.');
+                    vm.importErrorMessage(self.l10n['unknown_error']);
                 }
                 vm.isImportInProgress(false);
                 vm.importOutput('');
@@ -178,7 +176,7 @@ jQuery(document).ready(function() {
 
                 uploadRequest.success(function(response) {
                     if(response.success) {
-                        vm.importOutput('Processing the import file...');
+                        vm.importOutput(self.l10n['processing_import_file']);
                         successCalback(response.data.id);
                     } else {
                         handleImportFailure(response);
@@ -196,7 +194,7 @@ jQuery(document).ready(function() {
 
                 vm.isImportInProgress(true);
                 vm.importErrorMessage('');
-                vm.importOutput('Uploading the import file...');
+                vm.importOutput(self.l10n['uploading_import_file']);
 
                 var fileData = document.getElementById(importFileElementId).files[0];
 
@@ -257,6 +255,7 @@ jQuery(document).ready(function() {
             self.importExportNonce = self.modelData['ajax_nonce'];
             self.uploadNonce = self.modelData['upload_nonce'];
             self.uploadUrl = self.modelData['upload_url'];
+            self.l10n = self.modelData['l10n'];
 
             // Fire in the hole!
             //
