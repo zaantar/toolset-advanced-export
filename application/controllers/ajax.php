@@ -2,6 +2,8 @@
 
 namespace ToolsetExtraExport;
 
+use ToolsetExtraExport\Utils as utils;
+
 /**
  * Registers and handles AJAX callbacks.
  *
@@ -78,11 +80,12 @@ class Ajax {
             $exporter = new Exporter( [ Exporter::ARGUMENT_SECTIONS => $selected_sections ] );
 
             // Force file name if we need a link afterwards.
-            $zip = $exporter->get_zip( $preserve_file, ( $preserve_file ? 'toolset_extra_export.zip' : null ) );
+            $zip = $exporter->get_zip( $preserve_file, ( $preserve_file ? utils\generate_export_file_name() : null ) );
 
             $results = [
                 'message' => __( 'Export successful' ),
-                'output' => base64_encode( $zip['file'] )
+                'output' => base64_encode( $zip['file'] ),
+	            'fileName' => utils\generate_export_file_name()
             ];
 
             // If we have a link, we need to convert its absolute path to URL and send it as well.

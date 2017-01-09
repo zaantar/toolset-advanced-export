@@ -109,44 +109,45 @@ namespace {
 
 namespace ToolsetExtraExport\Utils {
 
-    /**
-     * @param bool|\WP_Error|\Exception $value Result value. For boolean, true determines a success, false
-     *     determines a failure. WP_Error and Exception are interpreted as failures.
-     * @param string|null $display_message Optional display message that will be used if a boolean result is
-     *     provided.
-     *
-     * @return \Toolset_Result
-     * @throws \InvalidArgumentException
-     */
-    function create_result( $value, $display_message = null ) {
-        return new \Toolset_Result( $value, $display_message );
-    }
+	/**
+	 * @param bool|\WP_Error|\Exception $value Result value. For boolean, true determines a success, false
+	 *     determines a failure. WP_Error and Exception are interpreted as failures.
+	 * @param string|null $display_message Optional display message that will be used if a boolean result is
+	 *     provided.
+	 *
+	 * @return \Toolset_Result
+	 * @throws \InvalidArgumentException
+	 */
+	function create_result( $value, $display_message = null ) {
+		return new \Toolset_Result( $value, $display_message );
+	}
 
 
-    /**
-     * Get additional information for identifying a post even after its ID changes.
-     *
-     * @param int $post_id
-     * @return array Contains at least the "exists" key (boolean).
-     * @since 1.0
-     */
-    function get_portable_post_data( $post_id ) {
+	/**
+	 * Get additional information for identifying a post even after its ID changes.
+	 *
+	 * @param int $post_id
+	 *
+	 * @return array Contains at least the "exists" key (boolean).
+	 * @since 1.0
+	 */
+	function get_portable_post_data( $post_id ) {
 
-        $post = get_post( $post_id );
-        if( ! $post instanceof \WP_Post ) {
-            return [ 'exists' => false ];
-        }
+		$post = get_post( $post_id );
+		if ( ! $post instanceof \WP_Post ) {
+			return [ 'exists' => false ];
+		}
 
-        $portable_post_data = [
-            'exists' => true,
-            'original_id' => $post->ID,
-            'slug' => $post->post_name,
-            'guid' => $post->guid,
-            'post_type' => $post->post_type
-        ];
+		$portable_post_data = [
+			'exists'      => true,
+			'original_id' => $post->ID,
+			'slug'        => $post->post_name,
+			'guid'        => $post->guid,
+			'post_type'   => $post->post_type
+		];
 
-        return $portable_post_data;
-    }
+		return $portable_post_data;
+	}
 
 
 	/**
@@ -154,25 +155,47 @@ namespace ToolsetExtraExport\Utils {
 	 *
 	 * @param int $term_id Term ID.
 	 * @param string $taxonomy Slug of the taxonomy, where the term belongs.
+	 *
 	 * @return array Contains at least the "exists" key (boolean).
 	 * @since 1.0
 	 */
-    function get_portable_term_data( $term_id, $taxonomy ) {
+	function get_portable_term_data( $term_id, $taxonomy ) {
 
-    	$term = get_term( $term_id, $taxonomy );
-    	if( null == $term || $term instanceof \WP_Error ) {
-    		return [ 'exists' => false ];
-	    }
+		$term = get_term( $term_id, $taxonomy );
+		if ( null == $term || $term instanceof \WP_Error ) {
+			return [ 'exists' => false ];
+		}
 
-	    $portable_term_data = [
-	    	'exists' => true,
-		    'original_id' => $term->term_id,
-		    'name' => $term->name,
-		    'slug' => $term->slug,
-		    'taxonomy' => $term->taxonomy
-	    ];
+		$portable_term_data = [
+			'exists'      => true,
+			'original_id' => $term->term_id,
+			'name'        => $term->name,
+			'slug'        => $term->slug,
+			'taxonomy'    => $term->taxonomy
+		];
 
-    	return $portable_term_data;
-    }
+		return $portable_term_data;
+	}
+
+
+	/**
+	 * Generate a name for the export file matching Toolset standards.
+	 *
+	 * THEMENAME-PLUGIN-SLUG-Y-M-D.zip
+	 *
+	 * @return string
+	 * @since 1.0
+	 */
+	function generate_export_file_name() {
+
+		return sprintf(
+			'%s-toolset-wp-settings-export-%s.zip',
+
+			// Theme slug without slashes or underscores
+			str_replace( '_', '', str_replace( '-', '', sanitize_title( get_stylesheet() ) ) ),
+
+			date( 'Y-m-d' )
+		);
+	}
 
 }

@@ -1,4 +1,5 @@
 
+//noinspection JSUnusedAssignment
 var Toolset = Toolset || {};
 Toolset.ExtraExport = Toolset.ExtraExport || {};
 
@@ -63,7 +64,9 @@ jQuery(document).ready(function() {
                     if(isFileSaverSupported()) {
                         // Convert the file content encoded as base64 string into a Blob and then download it.
                         var blob = b64toBlob(result.data.output, 'application/zip, application/octet-stream');
-                        saveAs(blob, 'toolset_extra_export.zip');
+                        //noinspection JSUnresolvedVariable
+                        var fileName = (_.has(result.data, 'fileName') ? result.data.fileName : 'toolset_extra_export.zip');
+                        saveAs(blob, fileName);
                     }
 
                     if(_.has(result.data, 'link')) {
