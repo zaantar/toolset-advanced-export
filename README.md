@@ -3,12 +3,20 @@
 Made primarily as a support plugin for 
 [Toolset-based themes](https://wp-types.com/documentation/user-guides/how-to-build-toolset-based-themes/).
 
-This plugin allows you to export various settings which are not covered by the 
-WordPress XML export. The purpose of exporting and importing these settings is to 
-allow users of your Toolset-based theme to receive an exact copy of your site 
+This plugin allows you to export and import various settings and content which is 
+not covered by the WordPress XML export. The purpose of exporting and importing this 
+data is to allow users of your Toolset-based theme to receive an exact copy of your site 
 without having to set options manually.
 
-Currently, there is a GUI for export and an API for both import and export.
+Namely, it works with:
+
+- Reading settings _(Settings &rarr; Reading)_
+- Customizer setup _(Appearance &rarr; Customize)_
+- Menu setup _(Appearance &rarr; Menus)_
+- Widget setup _(Appearance &rarr; Widgets)_
+
+Currently, there is a GUI and API available for both import and export, but the import GUI is
+hidden by default (see below for details).
 
 ## Usage
 
@@ -26,7 +34,7 @@ For generating an export file,
 
 This plugin offers a filter hook API for export and import.
 
-It is possible to export or import only certain section of settings:
+It is possible to export or import only selected section of settings:
 
 - `settings_reading`: Reading settings _(Settings &rarr; Reading)_
 - `appearance_customize`: Customizer setup _(Appearance &rarr; Customize)_
