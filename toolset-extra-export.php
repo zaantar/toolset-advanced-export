@@ -15,14 +15,14 @@ GitHub Plugin URI: zaantar/wordpress-extra-export
 
 
 function toolset_ee_is_environment_compatible() {
-	return ( PHP_VERSION_ID >= 50600 );
+	return ( PHP_VERSION_ID >= 50400 );
 }
 
 
 function toolset_ee_low_php_version_notice() {
 	?>
 	<div class="notice notice-error is-dismissible">
-		<p><?php _e( 'Toolset Extra Export requires PHP 5.6 or higher.', 'toolset-ee' ); ?></p>
+		<p><?php _e( 'Toolset Extra Export requires PHP 5.4 or higher.', 'toolset-ee' ); ?></p>
 	</div>
 	<?php
 }
