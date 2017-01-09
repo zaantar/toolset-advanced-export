@@ -1,7 +1,7 @@
 # Toolset Extra Export
 
 Made primarily as a support plugin for 
-[Toolset-based themes](https://wp-types.com/2016/12/sneak-preview-toolset-based-themes/).
+[Toolset-based themes](https://wp-types.com/documentation/user-guides/how-to-build-toolset-based-themes/).
 
 This plugin allows you to export various settings which are not covered by the 
 WordPress XML export. The purpose of exporting and importing these settings is to 
