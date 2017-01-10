@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Higher level API for performing import.

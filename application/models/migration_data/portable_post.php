@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Holds a reference to a post that should survive the post's ID change.

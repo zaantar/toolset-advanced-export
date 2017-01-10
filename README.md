@@ -1,4 +1,4 @@
-# Toolset Extra Export
+# Toolset Advanced Export
 
 Made primarily as a support plugin for 
 [Toolset-based themes](https://wp-types.com/documentation/user-guides/how-to-build-toolset-based-themes/).

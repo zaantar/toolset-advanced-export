@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Migration data from a WordPress section that consist of (possibly nested) associative or non-associative arrays

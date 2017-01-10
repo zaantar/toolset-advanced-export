@@ -1,8 +1,8 @@
-<div class="toolset_extra_export_wrap">
+<div class="toolset_advanced_export_wrap">
 
     {# We'll render this only once even if the template is reused. #}
     {% if js_model_data is defined %}
-        <script id="toolset_extra_export_model_data" type="text/plain">{{ js_model_data }}</script>
+        <script id="toolset_advanced_export_model_data" type="text/plain">{{ js_model_data }}</script>
     {% endif %}
 
     {% block body %}{% endblock %}

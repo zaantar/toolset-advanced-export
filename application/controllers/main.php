@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Main plugin controller.
@@ -28,7 +28,7 @@ final class Main {
 	private function __construct() {
 
 
-		require_once TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/functions.php';
+		require_once TOOLSET_ADVANCED_EXPORT_ABSPATH . '/application/functions.php';
 
 
 		// Register autoloaded classes.
@@ -43,14 +43,14 @@ final class Main {
 			//
 			// cd application
 			// /srv/www/ZendFramework-2.4.9/bin/classmap_generator.php --overwrite
-			$classmap = include( TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/autoload_classmap.php' );
+			$classmap = include( TOOLSET_ADVANCED_EXPORT_ABSPATH . '/application/autoload_classmap.php' );
 
 			if( \apply_filters( 'toolset_is_toolset_common_available', false ) ) {
 				// Use Toolset_Common_Autoloader to improve performace
 				\do_action( 'toolset_register_classmap', $classmap );
 			} else {
 				// Fallback to a standalone autoloader
-				require_once TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/autoloader.php';
+				require_once TOOLSET_ADVANCED_EXPORT_ABSPATH . '/application/autoloader.php';
 				Autoloader::initialize();
 				$autoloader = Autoloader::get_instance();
 				$autoloader->register_classmap( $classmap );
@@ -89,8 +89,8 @@ final class Main {
 
             $import_export_page_hook = \add_submenu_page(
                 'tools.php',
-                __( 'Toolset Extra Export', 'toolset-ee' ),
-                __( 'Toolset Extra Export', 'toolset-ee' ),
+                __( 'Toolset Extra Export', 'toolset-advanced-export' ),
+                __( 'Toolset Extra Export', 'toolset-advanced-export' ),
                 'manage_options',
                 // Not referencing the page controller class directly so its file is loaded only when we actually need it
                 self::MENU_SLUG,

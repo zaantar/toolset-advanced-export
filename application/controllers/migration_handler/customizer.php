@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\MigrationHandler;
+namespace ToolsetAdvancedExport\MigrationHandler;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**
@@ -278,7 +278,7 @@ class Customizer implements IMigration_Handler {
         $template_matches = ( toolset_getarr( $data, 'template' ) == get_template() );
 
         if( ! $theme_matches || ! $template_matches ) {
-            return new \Toolset_Result( false, __( 'The Customizer settings to be imported are not for the current theme.', 'toolset-ee' ) );
+            return new \Toolset_Result( false, __( 'The Customizer settings to be imported are not for the current theme.', 'toolset-advanced-export' ) );
         }
 
         $results = new \Toolset_Result_Set();

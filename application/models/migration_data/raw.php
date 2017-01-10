@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Holds a "raw" value (that is not necessarily an array).

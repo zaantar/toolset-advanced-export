@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Provides correct migration handlers for different data sections.
@@ -50,7 +50,7 @@ class Migration_Handler_Factory {
 		$migration_handler = apply_filters( 'toolset_extra_export_get_migration_handler', $migration_handler, $section_name );
 
 		if( ! $migration_handler instanceof MigrationHandler\IMigration_Handler ) {
-			throw new \RuntimeException( sprintf( __( 'Migration handler for %s not available.', 'toolset-ee' ), $section_name ) );
+			throw new \RuntimeException( sprintf( __( 'Migration handler for %s not available.', 'toolset-advanced-export' ), $section_name ) );
 		}
 
 		return $migration_handler;

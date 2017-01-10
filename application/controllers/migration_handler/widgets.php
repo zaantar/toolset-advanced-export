@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\MigrationHandler;
+namespace ToolsetAdvancedExport\MigrationHandler;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**
@@ -79,7 +79,7 @@ class Widgets implements IMigration_Handler {
 
 			if( ! isset( $sidebar['widgets'] ) ) {
 				$results->add( false, sprintf(
-						__( 'Sidebar "%s" does not exist in the active theme.', 'toolset-ee' ),
+						__( 'Sidebar "%s" does not exist in the active theme.', 'toolset-advanced-export' ),
 						$sidebar['name'] )
 				);
 				continue;
@@ -226,7 +226,7 @@ class Widgets implements IMigration_Handler {
 		// If no data or could not decode
 		if ( empty( $data ) || ! is_object( $data ) ) {
 			throw new \InvalidArgumentException(
-				esc_html__( 'Import data could not be read. Please try a different file.', 'toolset-ee' )
+				esc_html__( 'Import data could not be read. Please try a different file.', 'toolset-advanced-export' )
 			);
 		}
 
@@ -262,7 +262,7 @@ class Widgets implements IMigration_Handler {
 				$sidebar_available    = false;
 				$use_sidebar_id       = 'wp_inactive_widgets'; // add to inactive if sidebar does not exist in theme
 				$sidebar_message_type = 'error';
-				$sidebar_message      = esc_html__( 'Sidebar does not exist in theme (using Inactive)', 'toolset-ee' );
+				$sidebar_message      = esc_html__( 'Sidebar does not exist in theme (using Inactive)', 'toolset-advanced-export' );
 			}
 
 			// Result for sidebar
@@ -283,7 +283,7 @@ class Widgets implements IMigration_Handler {
 				if ( ! $fail && ! isset( $available_widgets[ $id_base ] ) ) {
 					$fail                = true;
 					$widget_message_type = 'error';
-					$widget_message      = esc_html__( 'Site does not support widget', 'toolset-ee' ); // explain why widget not imported
+					$widget_message      = esc_html__( 'Site does not support widget', 'toolset-advanced-export' ); // explain why widget not imported
 				}
 
 				// Convert multidimensional objects to multidimensional arrays
@@ -309,7 +309,7 @@ class Widgets implements IMigration_Handler {
 
 							$fail                = true;
 							$widget_message_type = 'warning';
-							$widget_message      = esc_html__( 'Widget already exists', 'toolset-ee' ); // explain why widget not imported
+							$widget_message      = esc_html__( 'Widget already exists', 'toolset-advanced-export' ); // explain why widget not imported
 
 							break;
 						}
@@ -355,17 +355,17 @@ class Widgets implements IMigration_Handler {
 					// Success message
 					if ( $sidebar_available ) {
 						$widget_message_type = 'success';
-						$widget_message      = esc_html__( 'Imported', 'toolset-ee' );
+						$widget_message      = esc_html__( 'Imported', 'toolset-advanced-export' );
 					} else {
 						$widget_message_type = 'warning';
-						$widget_message      = esc_html__( 'Imported to Inactive', 'toolset-ee' );
+						$widget_message      = esc_html__( 'Imported to Inactive', 'toolset-advanced-export' );
 					}
 
 				}
 
 				// Result for widget instance
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name']         = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base; // widget name or ID if name not available (not supported by site)
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title']        = ! empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'toolset-ee' ); // show "No Title" if widget instance is untitled
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title']        = ! empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'toolset-advanced-export' ); // show "No Title" if widget instance is untitled
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message_type'] = isset( $widget_message_type ) ? $widget_message_type : '';
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message']      = isset( $widget_message ) ? $widget_message : '';
 

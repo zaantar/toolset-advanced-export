@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\MigrationHandler;
+namespace ToolsetAdvancedExport\MigrationHandler;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**
@@ -70,7 +70,7 @@ abstract class Option_Array implements IMigration_Handler {
                 $option_data = e\Migration_Data_Nested_Array::from_array( $migration_array[ $option->get_name() ] );
                 $results->add( $option->import( $option_data ) );
             } else {
-                $results->add( false, sprintf( __( 'Option %s was missing in the import data.', 'toolset-ee' ), $option->get_name() ) );
+                $results->add( false, sprintf( __( 'Option %s was missing in the import data.', 'toolset-advanced-export' ), $option->get_name() ) );
             }
 
         }

@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\Gui;
+namespace ToolsetAdvancedExport\Gui;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**
@@ -102,9 +102,9 @@ abstract class Page_Import_Export {
 
 	private function localize_script() {
 		return [
-			'unknown_error' => __( 'An unknown error has happened.', 'toolset-ee' ),
-			'processing_import_file' => __( 'Processing the import file...', 'toolset-ee' ),
-			'uploading_import_file' => __( 'Uploading the import file...', 'toolset-ee' )
+			'unknown_error' => __( 'An unknown error has happened.', 'toolset-advanced-export' ),
+			'processing_import_file' => __( 'Processing the import file...', 'toolset-advanced-export' ),
+			'uploading_import_file' => __( 'Uploading the import file...', 'toolset-advanced-export' )
 		];
 	}
 
@@ -126,14 +126,14 @@ abstract class Page_Import_Export {
 			}
 
 			$loader = new \Twig_Loader_Filesystem();
-			$loader->addPath( TOOLSET_EXTRA_EXPORT_ABSPATH . '/application/views/' );
+			$loader->addPath( TOOLSET_ADVANCED_EXPORT_ABSPATH . '/application/views/' );
 
 			$twig = new \Twig_Environment( $loader );
 
 			// Twig extensions
 			//
 			//
-			$twig->addFunction( '__', new \Twig_SimpleFunction( '__', function( $text, $domain = 'toolset-ee' ) {
+			$twig->addFunction( '__', new \Twig_SimpleFunction( '__', function( $text, $domain = 'toolset-advanced-export' ) {
 				return __( $text, $domain );
 			} ) );
 		}
@@ -150,7 +150,7 @@ abstract class Page_Import_Export {
 
         $ko_source = sprintf(
             '%s/public/knockout/knockout-%s%s.js',
-            TOOLSET_EXTRA_EXPORT_ABSURL,
+            TOOLSET_ADVANCED_EXPORT_ABSURL,
             $ko_version,
             ( $is_script_debug_mode ? '.debug' : '' )
         );
@@ -162,7 +162,7 @@ abstract class Page_Import_Export {
             'filesaver',
             sprintf(
                 '%s/public/filesaver/FileSaver%s.js',
-                TOOLSET_EXTRA_EXPORT_ABSURL,
+                TOOLSET_ADVANCED_EXPORT_ABSURL,
                 ( $is_script_debug_mode ? '' : '.min' )
             ),
             [],
@@ -171,16 +171,16 @@ abstract class Page_Import_Export {
 
         wp_register_script(
         	'knockout-file-bind',
-	        TOOLSET_EXTRA_EXPORT_ABSURL . '/public/knockout-file-bind.js',
+	        TOOLSET_ADVANCED_EXPORT_ABSURL . '/public/knockout-file-bind.js',
 	        [ 'knockout' ],
-	        TOOLSET_EXTRA_EXPORT_VERSION
+	        TOOLSET_ADVANCED_EXPORT_VERSION
         );
 
         wp_enqueue_script(
             'toolset_extra_export_page',
-            TOOLSET_EXTRA_EXPORT_ABSURL . '/public/js/import_export.js',
+	        TOOLSET_ADVANCED_EXPORT_ABSURL . '/public/js/import_export.js',
             [ 'jquery', 'knockout', 'underscore', 'toolset-utils', 'filesaver', 'knockout-file-bind' ],
-            TOOLSET_EXTRA_EXPORT_VERSION
+            TOOLSET_ADVANCED_EXPORT_VERSION
         );
     }
 

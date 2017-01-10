@@ -107,7 +107,7 @@ namespace {
 }
 
 
-namespace ToolsetExtraExport\Utils {
+namespace ToolsetAdvancedExport\Utils {
 
 	/**
 	 * @param bool|\WP_Error|\Exception $value Result value. For boolean, true determines a success, false

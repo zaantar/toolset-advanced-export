@@ -1,9 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport\MigrationHandler;
+namespace ToolsetAdvancedExport\MigrationHandler;
 
-use ToolsetExtraExport as e;
-use ToolsetExtraExport\Utils as utils;
+use ToolsetAdvancedExport as e;
+use ToolsetAdvancedExport\Utils as utils;
 
 /**
  * Migrates menus, menu items and menu locations.
@@ -220,7 +220,7 @@ class Menu implements IMigration_Handler {
 
             if( ! $term_creation_result instanceof \WP_Error ) {
 	            $menu_id_map[ $old_menu_id ] = $term_creation_result['term_id'];
-	            $results->add( true, sprintf( __( 'Created menu "%s".', 'toolset-ee' ), sanitize_text_field( $menu_name ) ) );
+	            $results->add( true, sprintf( __( 'Created menu "%s".', 'toolset-advanced-export' ), sanitize_text_field( $menu_name ) ) );
             } else {
 	            $results->add( $term_creation_result );
             }
@@ -305,7 +305,7 @@ class Menu implements IMigration_Handler {
 		    // It will lose its hierarchy but otherwise it should be intact.
 			if( 0 === $new_parent_id ) {
 				$results->add( new \Toolset_Result( false, sprintf(
-					__( 'Cannot update the parent of menu item %d (previously %d) because there is no replacement available (check previous errors). The previous parent ID was %d.', 'toolset-ee' ),
+					__( 'Cannot update the parent of menu item %d (previously %d) because there is no replacement available (check previous errors). The previous parent ID was %d.', 'toolset-advanced-export' ),
 					$new_item_id, $old_item_id, $old_parent_id
 				) ) );
 			}
@@ -342,7 +342,7 @@ class Menu implements IMigration_Handler {
 
 		$menu_id = (int) toolset_getarr( $menu_id_map, $get( 'menu_id' ), null );
 		if( 0 === $menu_id ) {
-			return new \Toolset_Result( false, sprintf( __( 'Missing menu item ID mapping for "%d".', 'toolset-ee' ), $get( 'menu_id' ) ) );
+			return new \Toolset_Result( false, sprintf( __( 'Missing menu item ID mapping for "%d".', 'toolset-advanced-export' ), $get( 'menu_id' ) ) );
 		}
 
 		/**
@@ -432,7 +432,7 @@ class Menu implements IMigration_Handler {
 		        break;
 
             default:
-                $result = new \Toolset_Result( false, sprintf( __( 'Unknown type of a menu item target "%s".', 'toolset-ee' ), sanitize_text_field( $menu_item_type ) ) );
+                $result = new \Toolset_Result( false, sprintf( __( 'Unknown type of a menu item target "%s".', 'toolset-advanced-export' ), sanitize_text_field( $menu_item_type ) ) );
                 break;
         }
 
@@ -463,7 +463,7 @@ class Menu implements IMigration_Handler {
 	 */
 	private function get_current_target_post( $portable_target_data ) {
 		if( false == toolset_getarr( $portable_target_data, 'exists', false ) ) {
-			return new \Toolset_Result( false, __( 'Skipping a menu item pointing to a non-existent post.', 'toolset-ee' ) );
+			return new \Toolset_Result( false, __( 'Skipping a menu item pointing to a non-existent post.', 'toolset-advanced-export' ) );
 		}
 
 		/**
@@ -483,7 +483,7 @@ class Menu implements IMigration_Handler {
 		$post = get_post( $post_data->to_post_id() );
 
 		if( ! $post instanceof \WP_Post ) {
-			return new \Toolset_Result( false, __( 'Skipping a menu item pointing to a non-existent post.', 'toolset-ee' ) );
+			return new \Toolset_Result( false, __( 'Skipping a menu item pointing to a non-existent post.', 'toolset-advanced-export' ) );
 		}
 
 		return [
@@ -503,7 +503,7 @@ class Menu implements IMigration_Handler {
     private function get_current_target_term( $portable_target_data ) {
 
     	if( false == toolset_getarr( $portable_target_data, 'exists', false ) ) {
-    		return new \Toolset_Result( false, __( 'Skipping a menu item pointing to a non-existent term.', 'toolset-ee' ) );
+    		return new \Toolset_Result( false, __( 'Skipping a menu item pointing to a non-existent term.', 'toolset-advanced-export' ) );
 	    }
 
 	    /**
@@ -533,7 +533,7 @@ class Menu implements IMigration_Handler {
 
 	    if( false === $term ) {
 		    return new \Toolset_Result( false, sprintf(
-			    __( 'The menu item targeting the term "%s" in the taxonomy "%s" could not be imported. No such term exists.', 'toolset-ee' ),
+			    __( 'The menu item targeting the term "%s" in the taxonomy "%s" could not be imported. No such term exists.', 'toolset-advanced-export' ),
 			    $term_slug,
 			    $taxonomy_slug
 		    ) );

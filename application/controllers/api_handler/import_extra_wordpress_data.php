@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\ApiHandlers;
+namespace ToolsetAdvancedExport\ApiHandlers;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 /**
  * Handler for the toolset_import_extra_wordpress_data filter hook.
@@ -33,7 +33,7 @@ class Import_Extra_Wordpress_Data implements Api_Handler_Interface {
         $import_data = toolset_getarr( $arguments, 2, [] );
 
         if( ! is_array( $sections_to_import ) || empty( $sections_to_import ) || ! is_array( $import_data ) ) {
-            return new \Toolset_Result( false, __( 'Invalid arguments provided.', 'toolset-ee' ) );
+            return new \Toolset_Result( false, __( 'Invalid arguments provided.', 'toolset-advanced-export' ) );
         }
 
         $results = new \Toolset_Result_Set();

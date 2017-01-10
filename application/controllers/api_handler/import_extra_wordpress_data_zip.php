@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\ApiHandlers;
+namespace ToolsetAdvancedExport\ApiHandlers;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 /**
  * Handler for the toolset_import_extra_wordpress_data_zip filter hook.
@@ -34,7 +34,7 @@ class Import_Extra_Wordpress_Data_Zip implements Api_Handler_Interface {
 		$zip_path = toolset_getarr( $arguments, 1 );
 		if( ! file_exists( $zip_path ) ) {
 			return new \Toolset_Result( false, sprintf(
-				__( 'File "%s" was not found.', 'toolset-ee' ),
+				__( 'File "%s" was not found.', 'toolset-advanced-export' ),
 				$zip_path
 			) );
 		}
@@ -42,7 +42,7 @@ class Import_Extra_Wordpress_Data_Zip implements Api_Handler_Interface {
 		$import_json = file_get_contents( sprintf( 'zip://%s#settings.json', $zip_path ) );
 		if( false === $import_json ) {
 			return new \Toolset_Result( false, sprintf(
-				__( 'Cannot read import file "%s".', 'toolset-ee' ),
+				__( 'Cannot read import file "%s".', 'toolset-advanced-export' ),
 				$zip_path
 			) );
 		}
@@ -50,7 +50,7 @@ class Import_Extra_Wordpress_Data_Zip implements Api_Handler_Interface {
 		$import_data = json_decode( $import_json, true );
 		if( ! is_array( $import_data ) ) {
 			return new \Toolset_Result( false, sprintf(
-				__( 'Cannot parse import file "%s".', 'toolset-ee' ),
+				__( 'Cannot parse import file "%s".', 'toolset-advanced-export' ),
 				basename( $zip_path )
 			) );
 		}

@@ -1,9 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport\Tests\Application;
+namespace ToolsetAdvancedExport\Tests\Application;
 
-use ToolsetExtraExport\Tests as tests;
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport\Tests as tests;
+use ToolsetAdvancedExport as e;
 
 class Test_Migration_Data_Nested_Array extends tests\Test_Case {
 

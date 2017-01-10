@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\MigrationHandler;
+namespace ToolsetAdvancedExport\MigrationHandler;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**

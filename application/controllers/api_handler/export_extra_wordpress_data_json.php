@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\ApiHandlers;
+namespace ToolsetAdvancedExport\ApiHandlers;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 /**
  * Handler for the toolset_export_extra_wordpress_data_json filter hook.

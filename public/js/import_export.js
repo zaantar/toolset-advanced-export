@@ -1,7 +1,7 @@
 
 //noinspection JSUnusedAssignment
 var Toolset = Toolset || {};
-Toolset.ExtraExport = Toolset.ExtraExport || {};
+Toolset.AdvancedExport = Toolset.AdvancedExport || {};
 
 
 /**
@@ -14,13 +14,13 @@ Toolset.ExtraExport = Toolset.ExtraExport || {};
  */
 jQuery(document).ready(function() {
 
-    Toolset.ExtraExport.ExportPageController = new function($) {
+    Toolset.AdvancedExport.ExportPageController = new function($) {
 
         var self = this;
 
-        const rootElementSelector = '.toolset_extra_export_wrap';
-        const modelDataElementId = 'toolset_extra_export_model_data';
-        const importFileElementId = 'toolset_extra_export_import_file';
+        const rootElementSelector = '.toolset_advanced_export_wrap';
+        const modelDataElementId = 'toolset_advanced_export_model_data';
+        const importFileElementId = 'toolset_advanced_export_import_file';
 
         var vm = function(preselectedSections) {
             var vm = this;
@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
                 var exportRequest = $.post({
                     url: ajaxurl,
                     data: {
-                        action: 'toolset_ee_export',
+                        action: 'toolset_advanced_export_do_export',
                         wpnonce: self.importExportNonce,
                         selected_sections: vm.selectedSections(),
                         export_method: (isFileSaverSupported() ? 'saveas' : 'link')
@@ -65,7 +65,7 @@ jQuery(document).ready(function() {
                         // Convert the file content encoded as base64 string into a Blob and then download it.
                         var blob = b64toBlob(result.data.output, 'application/zip, application/octet-stream');
                         //noinspection JSUnresolvedVariable
-                        var fileName = (_.has(result.data, 'fileName') ? result.data.fileName : 'toolset_extra_export.zip');
+                        var fileName = (_.has(result.data, 'fileName') ? result.data.fileName : 'toolset_advanced_export.zip');
                         saveAs(blob, fileName);
                     }
 
@@ -131,7 +131,7 @@ jQuery(document).ready(function() {
                 $.post({
                     url: ajaxurl,
                     data: {
-                        action: 'toolset_ee_import',
+                        action: 'toolset_advanced_export_do_import',
                         wpnonce: self.importExportNonce,
                         attachment_id: attachmentId
                     },

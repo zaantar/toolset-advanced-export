@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Autoloads Twig classes.
@@ -73,7 +73,7 @@ class Customized_Twig_Autoloader {
 		}
 
 		// Modified path to Twig in Toolset.
-		$file = TOOLSET_EXTRA_EXPORT_ABSPATH . '/vendor/twig/twig/lib/' . str_replace( array( '_', "\0" ), array( '/', '' ), $class . '.php' );
+		$file = TOOLSET_ADVANCED_EXPORT_ABSPATH . '/vendor/twig/twig/lib/' . str_replace( array( '_', "\0" ), array( '/', '' ), $class . '.php' );
 
 		if ( is_file( $file ) ) {
 			/** @noinspection PhpIncludeInspection */

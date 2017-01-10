@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Public hook API.
@@ -15,10 +15,10 @@ namespace ToolsetExtraExport;
  *     can be used.
  * 2.  Filter names (without a prefix) should be defined in self::$callbacks.
  * 3.  For each filter, there should be a dedicated class implementing the
- *     \ToolsetExtraExport\ApiHandlers\Api_Handler_Interface. Name of the class must be
- *     \ToolsetExtraExport\ApiHandlers\{$capitalized_filter_name}. So for example, for a hook to
+ *     \ToolsetAdvancedExport\ApiHandlers\Api_Handler_Interface. Name of the class must be
+ *     \ToolsetAdvancedExport\ApiHandlers\{$capitalized_filter_name}. So for example, for a hook to
  *     'toolset_import_from_zip_file' you need to create a class
- *     '\ToolsetExtraExport\ApiHandlers\Api_Handler_Import_From_Zip_File'.
+ *     '\ToolsetAdvancedExport\ApiHandlers\Import_From_Zip_File'.
  *
  * @since 1.0
  */
@@ -50,7 +50,7 @@ final class Api {
 	const CALLBACK_PREFIX = 'callback_';
 
 	/** Prefix for the handler class name */
-	const HANDLER_CLASS_PREFIX = '\ToolsetExtraExport\ApiHandlers\\';
+	const HANDLER_CLASS_PREFIX = '\\ToolsetAdvancedExport\\ApiHandlers\\';
 
 	const HOOK_PREFIX = 'toolset_';
 
@@ -119,7 +119,7 @@ final class Api {
 
 		// Obtain an instance of the handler class.
 		try {
-			/** @var \ToolsetExtraExport\ApiHandlers\Api_Handler_Interface $handler */
+			/** @var \ToolsetAdvancedExport\ApiHandlers\Api_Handler_Interface $handler */
 			$handler = new $class_name();
 		} catch( \Exception $e ) {
 			// The handler class could not have been instantiated, resign.

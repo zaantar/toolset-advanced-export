@@ -1,11 +1,11 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Represents a section of WordPress data.
  *
- * @package ToolsetExtraExport
+ * @since 1.0
  */
 interface IMigration_Data {
 

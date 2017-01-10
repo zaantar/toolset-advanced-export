@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\Gui;
+namespace ToolsetAdvancedExport\Gui;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**

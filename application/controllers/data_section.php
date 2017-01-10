@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
 /**
  * Enum class holding names of different site sections that can be exported by this plugin.
@@ -33,23 +33,23 @@ final class Data_Section {
 	    return [
 	        self::SETTINGS_READING => sprintf(
 	            '%s (<em>%s</em>)',
-                __( 'Reading settings', 'toolset-ee' ),
-                __( 'Settings --> Reading', 'toolset-ee' )
+                __( 'Reading settings', 'toolset-advanced-export' ),
+                __( 'Settings --> Reading', 'toolset-advanced-export' )
             ),
             self::APPEARANCE_CUSTOMIZE => sprintf(
                 '%s (<em>%s</em>)',
-                __( 'Customizer setup', 'toolset-ee' ),
-                __( 'Appearance --> Customize', 'toolset-ee' )
+                __( 'Customizer setup', 'toolset-advanced-export' ),
+                __( 'Appearance --> Customize', 'toolset-advanced-export' )
             ),
             self::APPEARANCE_MENU => sprintf(
                 '%s (<em>%s</em>)',
-                __( 'Menu setup', 'toolset-ee' ),
-                __( 'Appearance --> Menus', 'toolset-ee' )
+                __( 'Menu setup', 'toolset-advanced-export' ),
+                __( 'Appearance --> Menus', 'toolset-advanced-export' )
             ),
             self::APPEARANCE_WIDGETS => sprintf(
                 '%s (<em>%s</em>)',
-                __( 'Widget setup', 'toolset-ee' ),
-                __( 'Appearance --> Widgets', 'toolset-ee' )
+                __( 'Widget setup', 'toolset-advanced-export' ),
+                __( 'Appearance --> Widgets', 'toolset-advanced-export' )
             ),
         ];
     }

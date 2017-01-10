@@ -1,6 +1,6 @@
 <?php
 
-namespace ToolsetExtraExport\Tests;
+namespace ToolsetAdvancedExport\Tests;
 
 abstract class Test_Case extends \WP_UnitTestCase {
 

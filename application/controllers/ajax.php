@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport;
+namespace ToolsetAdvancedExport;
 
-use ToolsetExtraExport\Utils as utils;
+use ToolsetAdvancedExport\Utils as utils;
 
 /**
  * Registers and handles AJAX callbacks.
@@ -25,7 +25,7 @@ class Ajax {
     private function __clone() { }
 
 
-    const EXPORT_NONCE = 'toolset_ee_export';
+    const EXPORT_NONCE = 'toolset_advanced_export_do_export';
 
 
     private function __construct() {
@@ -34,27 +34,27 @@ class Ajax {
 
 
     private function register_callbacks() {
-        add_action( 'wp_ajax_toolset_ee_export', [ $this, 'export' ] );
-        add_action( 'wp_ajax_toolset_ee_import', [ $this, 'import' ] );
+        add_action( 'wp_ajax_toolset_advanced_export_do_export', [ $this, 'export' ] );
+        add_action( 'wp_ajax_toolset_advanced_export_do_import', [ $this, 'import' ] );
     }
 
 
     private function verify_nonce() {
 	    if( ! wp_verify_nonce( toolset_getarr( $_POST, 'wpnonce' ), self::EXPORT_NONCE ) ) {
-		    wp_send_json_error( [ 'message' => __( 'Invalid nonce', 'toolset-ee' ) ] );
+		    wp_send_json_error( [ 'message' => __( 'Invalid nonce', 'toolset-advanced-export' ) ] );
 		    die;
 	    };
     }
 
 
     /**
-     * toolset_ee_export callback
+     * toolset_advanced_export_do_export callback
      *
      * Generates an JSON export file in a ZIP archive and renders the contents of the ZIP archive as
      * a base64-encoded string.
      *
      * Expects following POST variables:
-     * - wpnonce: A valid toolset_ee_export nonce.
+     * - wpnonce: A valid toolset_advanced_export_do_export nonce.
      * - selected_sections: An array of section names that should be exported.
      *
      * @since 1.0
@@ -68,12 +68,12 @@ class Ajax {
             $selected_sections = array_map( 'sanitize_text_field', toolset_ensarr( toolset_getarr( $_POST, 'selected_sections', [] ) ) );
 
             /**
-             * toolset_extra_export_preserve_file
+             * toolset_advanced_export_preserve_file
              *
              * Allow for forcing us to preserve the export file and provide a link to it.
              */
             $preserve_file = (bool) apply_filters(
-                'toolset_extra_export_preserve_file',
+                'toolset_advanced_export_preserve_file',
                 ( 'link' == toolset_getarr( $_POST, 'export_method', 'link' ) )
             );
 
@@ -103,7 +103,7 @@ class Ajax {
 
         } catch( \Exception $e ) {
             wp_send_json_error( [
-                'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-ee' ), $e->getMessage() )
+                'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-advanced-export' ), $e->getMessage() )
             ] );
         }
 
@@ -112,12 +112,12 @@ class Ajax {
 
 
 	/**
-	 * toolset_ee_import callback
+	 * toolset_advanced_export_do_import callback
 	 *
 	 * Grabs a ZIP file previously uploaded as an attachment, uses the API hook to import it and deletes it after.
 	 *
 	 * Expects following POST variables:
-	 * - wpnonce: A valid toolset_ee_export nonce.
+	 * - wpnonce: A valid toolset_advanced_export_do_export nonce.
 	 * - attachment_id: ID of the attachment with the import zip file.
 	 *
 	 * @since 1.0
@@ -134,7 +134,7 @@ class Ajax {
 
 			if( false == $zip_path || ! file_exists( $zip_path ) ) {
 				throw new \InvalidArgumentException( sprintf(
-					__( 'The file was not correctly uploaded. Cannot locate the attachment %d in "%s".', 'toolset-ee' ),
+					__( 'The file was not correctly uploaded. Cannot locate the attachment %d in "%s".', 'toolset-advanced-export' ),
 					$zip_attachment_id,
 					$zip_path
 				) );
@@ -158,7 +158,7 @@ class Ajax {
 
 	    } catch( \Exception $e ) {
 		    wp_send_json_error( [
-			    'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-ee' ), $e->getMessage() )
+			    'message' => sprintf( __( 'An error ocurred during the export: %s', 'toolset-advanced-export' ), $e->getMessage() )
 		    ] );
 	    }
 

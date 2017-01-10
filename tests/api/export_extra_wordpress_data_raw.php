@@ -1,7 +1,7 @@
 <?php
 
-namespace ToolsetExtraExport\Tests\Api;
-use ToolsetExtraExport\Tests as tests;
+namespace ToolsetAdvancedExport\Tests\Api;
+use ToolsetAdvancedExport\Tests as tests;
 
 class Export_Extra_Wordpress_Data_Raw extends tests\Test_Case {
 

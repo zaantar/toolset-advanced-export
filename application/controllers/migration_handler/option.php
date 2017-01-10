@@ -1,9 +1,9 @@
 <?php
 
-namespace ToolsetExtraExport\MigrationHandler;
+namespace ToolsetAdvancedExport\MigrationHandler;
 
-use ToolsetExtraExport as e;
-use ToolsetExtraExport\Utils as utils;
+use ToolsetAdvancedExport as e;
+use ToolsetAdvancedExport\Utils as utils;
 
 /**
  * Handles the import and export of a single WordPress option.

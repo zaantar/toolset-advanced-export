@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\ApiHandlers;
+namespace ToolsetAdvancedExport\ApiHandlers;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**

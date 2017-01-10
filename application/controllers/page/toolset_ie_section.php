@@ -1,8 +1,8 @@
 <?php
 
-namespace ToolsetExtraExport\Gui;
+namespace ToolsetAdvancedExport\Gui;
 
-use ToolsetExtraExport as e;
+use ToolsetAdvancedExport as e;
 
 
 /**
@@ -13,7 +13,7 @@ use ToolsetExtraExport as e;
 class Toolset_Ie_Section extends Page_Import_Export {
 
     // Slug of the Toolset Import/Export section
-    const TAB_SLUG = 'toolset_extra_export';
+    const TAB_SLUG = 'toolset_advanced_export';
 
     const EXPORT_SECTION_SLUG = 'export';
     const IMPORT_SECTION_SLUG = 'import';
@@ -43,7 +43,7 @@ class Toolset_Ie_Section extends Page_Import_Export {
     	$tab_items = [
 		    'export' => [
 			    'slug' => self::EXPORT_SECTION_SLUG,
-			    'title' => __( 'Export Theme settings', 'toolset-ee' ),
+			    'title' => __( 'Export Theme settings', 'toolset-advanced-export' ),
 			    'callback' => function() use( $self ) { $self->render( 'export' ); }
 		    ]
 	    ];
@@ -59,14 +59,14 @@ class Toolset_Ie_Section extends Page_Import_Export {
     	if( apply_filters( 'toolset_extra_export_show_import_gui', false ) ) {
     		$tab_items['import'] = [
 			    'slug' => self::IMPORT_SECTION_SLUG,
-			    'title' => __( 'Import Theme settings', 'toolset-ee' ),
+			    'title' => __( 'Import Theme settings', 'toolset-advanced-export' ),
 			    'callback' => function() use( $self ) { $self->render( 'import' ); }
 		    ];
 	    }
 
         $sections[ self::TAB_SLUG ] = [
             'slug' => self::TAB_SLUG,
-            'title' => __( 'Theme (TBT)', 'toolset-ee' ),
+            'title' => __( 'Theme (TBT)', 'toolset-advanced-export' ),
             'icon' => '<i class="icon-toolset-logo ont-icon-16"></i>', // todo add specific icon
             'items' => $tab_items
         ];
