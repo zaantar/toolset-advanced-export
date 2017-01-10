@@ -116,7 +116,7 @@ final class Main {
             Gui\Toolset_Ie_Section::initialize();
 
             return Gui\Toolset_Ie_Section::get_instance()->register( $sections );
-        }, 0 );
+        }, 100 );
 
 
         // TODO also consider hooking into register_importer in some way
