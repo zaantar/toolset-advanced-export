@@ -207,7 +207,8 @@ class Customizer implements IMigration_Handler {
     /**
      * Obtain the \WP_Customize_Manager instance.
      *
-     * The process is rather tricky and fragile, with a possible side-effect on. Works well with WordPress 4.7
+     * The process is rather tricky and fragile, with a possible side-effect on the Customizer page.
+     * Works well with WordPress 4.7
      *
      * @return \WP_Customize_Manager
      * @since 1.0

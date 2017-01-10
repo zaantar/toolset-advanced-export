@@ -2,7 +2,7 @@
 /*
 Plugin Name: Toolset Advanced Export
 Plugin URI: https://github.com/zaantar/toolset-advanced-export
-Description:
+Description: Export and import additional site settings and content that is not included in the standard WordPress export file.
 Version: 1.0-dev
 Author: OnTheGoSystems
 Author URI: http://toolset.com
@@ -28,7 +28,7 @@ function toolset_advanced_export_low_php_version_notice() {
 }
 
 
-function toolset_ee_environment_compatibility_check() {
+function toolset_advanced_export_environment_compatibility_check() {
 
 	if( ! toolset_advanced_export_is_environment_compatible() ) {
 		add_action( 'admin_notices', 'toolset_advanced_export_low_php_version_notice' );
@@ -38,9 +38,9 @@ function toolset_ee_environment_compatibility_check() {
 }
 
 
-register_activation_hook( __FILE__, 'toolset_ee_environment_compatibility_check' );
+register_activation_hook( __FILE__, 'toolset_advanced_export_environment_compatibility_check' );
 
-add_action( 'admin_init', 'toolset_ee_environment_compatibility_check' );
+add_action( 'admin_init', 'toolset_advanced_export_environment_compatibility_check' );
 
 if( toolset_advanced_export_is_environment_compatible() ) {
 	require_once dirname( __FILE__ ) . '/bootstrap.php';

@@ -23,7 +23,9 @@ hidden by default (see below for details).
 For generating an export file, 
 
 1. Make sure your site meets all the requirements described below.
-2. Download, install and activate this plugin.
+2. Download, install and activate this plugin (**note:** if you checkout from the 
+repository directly, you need to run `composer install` in the plugin directory before 
+activating it).
 3. Go to `Toolset` &rarr; `Export / Import` in the WordPress admin menu
  and select the `Theme (TBT)` tab.
 4. Choose what do you want to export and click on the `Export` button.
