@@ -1,6 +1,7 @@
 # files and directories ignored by the wp dist-archive command
 
 # plugin things
+.ackrc
 .distignore
 docs
 phpunit.xml
