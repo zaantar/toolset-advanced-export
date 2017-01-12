@@ -3,7 +3,11 @@
 {% block body %}
 
     <p>{{ __( 'This section allows you to export various settings which are not covered by the WordPress XML export. The purpose of exporting and importing these settings is to allow users of your Toolset-based theme to receive an exact copy of your site without having to set options manually.' ) }}</p>
-    <p><a href="https://wp-types.com/documentation/user-guides/how-to-build-toolset-based-themes/">{{ __( 'How to build Toolset-based themes' ) }}</a></p>
+    <p>
+        <a href="https://wp-types.com/documentation/user-guides/how-to-build-toolset-based-themes/?utm_source=toolset-advanced-export&utm_campaign=plugin&utm_medium=plugin-admin&utm_term=How%20to%20build%20Toolset-based%20themes" target="_blank">
+            {{ __( 'How to build Toolset-based themes' ) }}
+        </a>
+    </p>
 
     <div style="margin-top: 30px;">
         {% for section_name, section_label in sections %}
