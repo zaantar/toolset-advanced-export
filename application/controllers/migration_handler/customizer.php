@@ -33,7 +33,8 @@ class Customizer implements IMigration_Handler {
 
             'theme_mods' => $this->export_theme_mods(),
             'custom_options' => $this->export_custom_theme_options(),
-            'customizer' => $this->export_customizer()
+            'customizer' => $this->export_customizer(),
+	        'custom_css' => $this->export_custom_css(),
         ];
 
 
@@ -204,6 +205,17 @@ class Customizer implements IMigration_Handler {
     }
 
 
+	/**
+	 * Get the custom CSS currently used for the active theme.
+	 *
+	 * @return string
+	 * @since 1.0
+	 */
+    private function export_custom_css() {
+    	return wp_get_custom_css();
+    }
+
+
     /**
      * Obtain the \WP_Customize_Manager instance.
      *
@@ -287,6 +299,7 @@ class Customizer implements IMigration_Handler {
         $results->add( $this->import_custom_options( toolset_ensarr( toolset_getarr( $data, 'custom_options' ) ) ) );
         $results->add( $this->import_customizer( toolset_ensarr( toolset_getarr( $data, 'customizer' ) ) ) );
         $results->add( $this->import_theme_mods( toolset_ensarr( toolset_getarr( $data, 'theme_mods' ) ) ) );
+        $results->add( $this->import_custom_css( toolset_getarr( $data, 'custom_css' ) ) );
 
         // Finish the actions on Customizer.
         do_action( 'customize_save_after', $this->get_customize_manager() );
@@ -358,6 +371,25 @@ class Customizer implements IMigration_Handler {
 
         return new \Toolset_Result( true );
 
+    }
+
+
+	/**
+	 * Import custom CSS code for the currently active theme.
+	 *
+	 * @param string $custom_css
+	 * @return \Toolset_Result
+	 * @since 1.0
+	 */
+    private function import_custom_css( $custom_css ) {
+	    $result = wp_update_custom_css_post( $custom_css );
+	    if( $result instanceof \WP_Post ) {
+	    	return new \Toolset_Result( true, __( 'Custom CSS imported.', 'toolset-advanced-export' ) );
+	    } elseif( $result instanceof \WP_Error ) {
+	    	return new \Toolset_Result( $result );
+	    } else {
+	    	return new \Toolset_Result( false, __( 'An error happened when importing custom CSS', 'toolset-advanced-export' ) );
+	    }
     }
 
 }
