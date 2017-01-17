@@ -46,7 +46,7 @@ class Widgets implements IMigration_Handler {
 	function import( $data ) {
 
 		$data = $data->to_array();
-		
+
 		if ( ! array_key_exists( 'wie', $data ) ) {
 			throw new \InvalidArgumentException( 'Data for the widget import are corrupt.' );
 		}
@@ -68,6 +68,7 @@ class Widgets implements IMigration_Handler {
 	 * Process the result array coming from the WIE code and generate a \Toolset_Result_Set.
 	 *
 	 * @param array $wie_results
+	 *
 	 * @return \Toolset_Result_Set
 	 * @since 1.0
 	 */
@@ -75,9 +76,9 @@ class Widgets implements IMigration_Handler {
 
 		$results = new \Toolset_Result_Set();
 
-		foreach( $wie_results as $sidebar_id => $sidebar ) {
+		foreach ( $wie_results as $sidebar_id => $sidebar ) {
 
-			if( ! isset( $sidebar['widgets'] ) ) {
+			if ( ! isset( $sidebar['widgets'] ) ) {
 				$results->add( false, sprintf(
 						__( 'Sidebar "%s" does not exist in the active theme.', 'toolset-advanced-export' ),
 						$sidebar['name'] )
@@ -85,16 +86,16 @@ class Widgets implements IMigration_Handler {
 				continue;
 			}
 
-			foreach( $sidebar['widgets'] as $widget_instance_id => $widget ) {
+			foreach ( $sidebar['widgets'] as $widget_instance_id => $widget ) {
 
-				if( empty( $widget['message_type'] ) ) {
+				if ( empty( $widget['message_type'] ) ) {
 					continue;
 				}
 
 				$is_success = ( 'success' == $widget['message_type'] );
 
 				$results->add( $is_success, sprintf(
-					__( 'Widget "%s" (%s) in the sidebar "%s": %s'),
+					__( 'Widget "%s" (%s) in the sidebar "%s": %s' ),
 					$widget['name'],
 					$widget['title'],
 					$sidebar['name'],
@@ -142,7 +143,7 @@ class Widgets implements IMigration_Handler {
 
 					// Key is ID (not _multiwidget)
 					if ( is_numeric( $instance_id ) ) {
-						$unique_instance_id                      = $widget_data['id_base'] . '-' . $instance_id;
+						$unique_instance_id = $widget_data['id_base'] . '-' . $instance_id;
 						$widget_instances[ $unique_instance_id ] = $instance_data;
 					}
 				}
@@ -150,7 +151,7 @@ class Widgets implements IMigration_Handler {
 		}
 
 		// Gather sidebars with their widget instances
-		$sidebars_widgets          = get_option( 'sidebars_widgets' ); // get sidebars and their unique widgets IDs
+		$sidebars_widgets = get_option( 'sidebars_widgets' ); // get sidebars and their unique widgets IDs
 		$sidebars_widget_instances = array();
 		foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
 
@@ -202,7 +203,7 @@ class Widgets implements IMigration_Handler {
 
 			if ( ! empty( $widget['id_base'] ) && ! isset( $available_widgets[ $widget['id_base'] ] ) ) { // no dupes
 				$available_widgets[ $widget['id_base'] ]['id_base'] = $widget['id_base'];
-				$available_widgets[ $widget['id_base'] ]['name']    = $widget['name'];
+				$available_widgets[ $widget['id_base'] ]['name'] = $widget['name'];
 			}
 		}
 
@@ -215,7 +216,9 @@ class Widgets implements IMigration_Handler {
 	 * Import widget data
 	 *
 	 * @global array $wp_registered_sidebars
+	 *
 	 * @param object $data widget data
+	 *
 	 * @return array Results array
 	 */
 	private function wie_import_data( $data ) {
@@ -254,22 +257,22 @@ class Widgets implements IMigration_Handler {
 			// Check if sidebar is available on this site
 			// Otherwise add widgets to inactive, and say so
 			if ( isset( $wp_registered_sidebars[ $sidebar_id ] ) ) {
-				$sidebar_available    = true;
-				$use_sidebar_id       = $sidebar_id;
+				$sidebar_available = true;
+				$use_sidebar_id = $sidebar_id;
 				$sidebar_message_type = 'success';
-				$sidebar_message      = '';
+				$sidebar_message = '';
 			} else {
-				$sidebar_available    = false;
-				$use_sidebar_id       = 'wp_inactive_widgets'; // add to inactive if sidebar does not exist in theme
+				$sidebar_available = false;
+				$use_sidebar_id = 'wp_inactive_widgets'; // add to inactive if sidebar does not exist in theme
 				$sidebar_message_type = 'error';
-				$sidebar_message      = esc_html__( 'Sidebar does not exist in theme (using Inactive)', 'toolset-advanced-export' );
+				$sidebar_message = esc_html__( 'Sidebar does not exist in theme (using Inactive)', 'toolset-advanced-export' );
 			}
 
 			// Result for sidebar
-			$results[ $sidebar_id ]['name']         = ! empty( $wp_registered_sidebars[ $sidebar_id ]['name'] ) ? $wp_registered_sidebars[ $sidebar_id ]['name'] : $sidebar_id; // sidebar name if theme supports it; otherwise ID
+			$results[ $sidebar_id ]['name'] = ! empty( $wp_registered_sidebars[ $sidebar_id ]['name'] ) ? $wp_registered_sidebars[ $sidebar_id ]['name'] : $sidebar_id; // sidebar name if theme supports it; otherwise ID
 			$results[ $sidebar_id ]['message_type'] = $sidebar_message_type;
-			$results[ $sidebar_id ]['message']      = $sidebar_message;
-			$results[ $sidebar_id ]['widgets']      = array();
+			$results[ $sidebar_id ]['message'] = $sidebar_message;
+			$results[ $sidebar_id ]['widgets'] = array();
 
 			// Loop widgets
 			foreach ( $widgets as $widget_instance_id => $widget ) {
@@ -277,13 +280,13 @@ class Widgets implements IMigration_Handler {
 				$fail = false;
 
 				// Get id_base (remove -# from end) and instance ID number
-				$id_base            = preg_replace( '/-[0-9]+$/', '', $widget_instance_id );
+				$id_base = preg_replace( '/-[0-9]+$/', '', $widget_instance_id );
 
 				// Does site support this widget?
 				if ( ! $fail && ! isset( $available_widgets[ $id_base ] ) ) {
-					$fail                = true;
+					$fail = true;
 					$widget_message_type = 'error';
-					$widget_message      = esc_html__( 'Site does not support widget', 'toolset-advanced-export' ); // explain why widget not imported
+					$widget_message = esc_html__( 'Site does not support widget', 'toolset-advanced-export' ); // explain why widget not imported
 				}
 
 				// Convert multidimensional objects to multidimensional arrays
@@ -298,7 +301,7 @@ class Widgets implements IMigration_Handler {
 
 					// Get existing widgets in this sidebar
 					$sidebars_widgets = get_option( 'sidebars_widgets' );
-					$sidebar_widgets  = isset( $sidebars_widgets[ $use_sidebar_id ] ) ? $sidebars_widgets[ $use_sidebar_id ] : array(); // check Inactive if that's where will go
+					$sidebar_widgets = isset( $sidebars_widgets[ $use_sidebar_id ] ) ? $sidebars_widgets[ $use_sidebar_id ] : array(); // check Inactive if that's where will go
 
 					// Loop widgets with ID base
 					$single_widget_instances = ! empty( $widget_instances[ $id_base ] ) ? $widget_instances[ $id_base ] : array();
@@ -307,9 +310,9 @@ class Widgets implements IMigration_Handler {
 						// Is widget in same sidebar and has identical settings?
 						if ( in_array( "$id_base-$check_id", $sidebar_widgets ) && (array) $widget == $check_widget ) {
 
-							$fail                = true;
+							$fail = true;
 							$widget_message_type = 'warning';
-							$widget_message      = esc_html__( 'Widget already exists', 'toolset-advanced-export' ); // explain why widget not imported
+							$widget_message = esc_html__( 'Widget already exists', 'toolset-advanced-export' ); // explain why widget not imported
 
 							break;
 						}
@@ -320,8 +323,8 @@ class Widgets implements IMigration_Handler {
 				if ( ! $fail ) {
 
 					// Add widget instance
-					$single_widget_instances   = get_option( 'widget_' . $id_base ); // all instances for that widget ID base, get fresh every time
-					$single_widget_instances   = ! empty( $single_widget_instances ) ? $single_widget_instances : array( '_multiwidget' => 1 ); // start fresh if have to
+					$single_widget_instances = get_option( 'widget_' . $id_base ); // all instances for that widget ID base, get fresh every time
+					$single_widget_instances = ! empty( $single_widget_instances ) ? $single_widget_instances : array( '_multiwidget' => 1 ); // start fresh if have to
 					$single_widget_instances[] = $widget; // add it
 
 					// Get the key it was given
@@ -331,7 +334,7 @@ class Widgets implements IMigration_Handler {
 					// If key is 0, make it 1
 					// When 0, an issue can occur where adding a widget causes data from other widget to load, and the widget doesn't stick (reload wipes it)
 					if ( '0' === strval( $new_instance_id_number ) ) {
-						$new_instance_id_number                             = 1;
+						$new_instance_id_number = 1;
 						$single_widget_instances[ $new_instance_id_number ] = $single_widget_instances[0];
 						unset( $single_widget_instances[0] );
 					}
@@ -347,27 +350,27 @@ class Widgets implements IMigration_Handler {
 					update_option( 'widget_' . $id_base, $single_widget_instances );
 
 					// Assign widget instance to sidebar
-					$sidebars_widgets                      = get_option( 'sidebars_widgets' ); // which sidebars have which widgets, get fresh every time
-					$new_instance_id                       = $id_base . '-' . $new_instance_id_number; // use ID number from new widget instance
+					$sidebars_widgets = get_option( 'sidebars_widgets' ); // which sidebars have which widgets, get fresh every time
+					$new_instance_id = $id_base . '-' . $new_instance_id_number; // use ID number from new widget instance
 					$sidebars_widgets[ $use_sidebar_id ][] = $new_instance_id; // add new instance to sidebar
 					update_option( 'sidebars_widgets', $sidebars_widgets ); // save the amended data
 
 					// Success message
 					if ( $sidebar_available ) {
 						$widget_message_type = 'success';
-						$widget_message      = esc_html__( 'Imported', 'toolset-advanced-export' );
+						$widget_message = esc_html__( 'Imported', 'toolset-advanced-export' );
 					} else {
 						$widget_message_type = 'warning';
-						$widget_message      = esc_html__( 'Imported to Inactive', 'toolset-advanced-export' );
+						$widget_message = esc_html__( 'Imported to Inactive', 'toolset-advanced-export' );
 					}
 
 				}
 
 				// Result for widget instance
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name']         = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base; // widget name or ID if name not available (not supported by site)
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title']        = ! empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'toolset-advanced-export' ); // show "No Title" if widget instance is untitled
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name'] = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base; // widget name or ID if name not available (not supported by site)
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title'] = ! empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'toolset-advanced-export' ); // show "No Title" if widget instance is untitled
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message_type'] = isset( $widget_message_type ) ? $widget_message_type : '';
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message']      = isset( $widget_message ) ? $widget_message : '';
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message'] = isset( $widget_message ) ? $widget_message : '';
 
 			}
 
