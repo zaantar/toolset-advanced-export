@@ -561,7 +561,9 @@ class Menu implements IMigration_Handler {
         $updated_locations = array_reduce(
             array_keys( $locations ),
             function( $carry, $location_slug ) use( $locations, $menu_id_map ) {
-                $carry[ $location_slug ] = $menu_id_map[ $locations[ $location_slug ] ];
+            	// Apply the mapping or set 0 if there is none.
+                $carry[ $location_slug ] = toolset_getarr( $menu_id_map, $locations[ $location_slug ], 0 );
+                return $carry;
             },
             []
         );
