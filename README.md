@@ -154,6 +154,11 @@ and that post GUIDs haven't been changed.
  
 If this is not the case, the import may turn out to be incomplete or downright broken.
 
+Please note also that URLs pointing to local resources (images and other files) are
+not updated by this plugin. It is currently out of the scope of the plugin and
+it needs to be handled manually. The main reason is that in Toolset-based themes,
+there is another, more generic mechanism implemented outside of this plugin.
+
 ## Credits
 
 The relevant part of the widget export was, with the deepest gratitude to its authors, taken from the 
