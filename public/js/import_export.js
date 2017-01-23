@@ -102,6 +102,10 @@ jQuery(document).ready(function() {
 
             vm.isImportInProgress = ko.observable(false);
 
+            vm.isImportButtonEnabled = ko.pureComputed(function() {
+                return ( vm.isImportPossible() && ! vm.isImportInProgress() );
+            });
+
             vm.importOutput = ko.observable();
 
             vm.importFileName = ko.observable('');
@@ -251,7 +255,34 @@ jQuery(document).ready(function() {
             return jQuery.parseJSON(WPV_Toolset.Utils.editor_decode64(jQuery('#' + modelDataElementId).html()));
         };
 
+
+        var setupKnockout = function() {
+
+            var enablePrimary = function(element, valueAccessor) {
+                var isEnabled = ko.unwrap(valueAccessor());
+                if(isEnabled) {
+                    $(element).prop('disabled', false).addClass('button-primary');
+                } else {
+                    $(element).prop('disabled', true).removeClass('button-primary');
+                }
+            };
+
+            /**
+             * Disable primary button and update its class.
+             *
+             * @since 2.0
+             */
+            ko.bindingHandlers.enablePrimary = {
+                init: enablePrimary,
+                update: enablePrimary
+            };
+
+        };
+
+
         var init = function() {
+
+            setupKnockout();
 
             // Retrieve and process data passed from PHP
             self.modelData = getModelData();

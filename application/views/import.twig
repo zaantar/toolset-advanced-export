@@ -2,23 +2,23 @@
 
 {% block body %}
 
-    <p>{{ __( 'Here you can import the settings exported from another site. Please make sure that you satisfy these conditions, which are enforced by WordPress:' ) }}</p>
+    <p>{{ __( 'This section allows you to import the settigns exported from another site. Please make sure that both source and target sites:' ) }}</p>
     <p>
         <label>
             <input type="checkbox" data-bind="checked: importRequirements" value="same_theme_active"/>
-            {{ __( 'The active theme is the same as on the site where the export comes from.') }}
+            {{ __( 'Have the same active theme.') }}
         </label>
     </p>
     <p>
         <label>
             <input type="checkbox" data-bind="checked: importRequirements" value="same_plugins_active"/>
-            {{ __( 'The same plugins that register active widgets are active on export and on import.') }}
+            {{ __( 'Have the same active plugins that register widgets.') }}
         </label>
     </p>
     <p>
         <label>
             <input type="checkbox" data-bind="checked: importRequirements" value="relevant_content_imported"/>
-            {{ __( 'Posts, taxonomies and terms referenced in menus or settings are already imported, and that post GUIDs haven\'t been changed.' ) }}
+            {{ __( 'Have the same post types, posts, taxonomies and terms referenced in menus or settings and that GUIDs have not been changed.' ) }}
         </label>
     </p>
 
@@ -42,8 +42,8 @@
         ></span>
 
         <button
-                type="submit" class="button-primary form-submit submit"
-                data-bind="click: onImportClick, enable: ( isImportPossible() && ! isImportInProgress() )"
+                type="submit" class="button button-primary form-submit submit"
+                data-bind="click: onImportClick, enablePrimary: isImportButtonEnabled"
         >{{ __( 'Import' ) }}</button>
 
         <span class="spinner" data-bind="style: { visibility: (isImportInProgress() ? 'visible' : 'hidden') }"></span>

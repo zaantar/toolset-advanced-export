@@ -30,28 +30,46 @@ final class Data_Section {
 
 
 	public static function labels() {
-	    return [
-	        self::SETTINGS_READING => sprintf(
-	            '%s (<em>%s</em>)',
-                __( 'Reading settings', 'toolset-advanced-export' ),
-                __( 'Settings --> Reading', 'toolset-advanced-export' )
-            ),
-            self::APPEARANCE_CUSTOMIZE => sprintf(
-                '%s (<em>%s</em>)',
-                __( 'Customizer setup', 'toolset-advanced-export' ),
-                __( 'Appearance --> Customize', 'toolset-advanced-export' )
-            ),
-            self::APPEARANCE_MENU => sprintf(
-                '%s (<em>%s</em>)',
-                __( 'Menu setup', 'toolset-advanced-export' ),
-                __( 'Appearance --> Menus', 'toolset-advanced-export' )
-            ),
-            self::APPEARANCE_WIDGETS => sprintf(
-                '%s (<em>%s</em>)',
-                __( 'Widget setup', 'toolset-advanced-export' ),
-                __( 'Appearance --> Widgets', 'toolset-advanced-export' )
-            ),
+	    $label_descriptions = [
+	        self::SETTINGS_READING => [
+                'section_name' => __( 'Reading settings', 'toolset-advanced-export' ),
+                'location' => __( 'Settings &rarr; Reading', 'toolset-advanced-export' ),
+		        'url' => admin_url( 'options-reading.php' )
+            ],
+            self::APPEARANCE_CUSTOMIZE => [
+                'section_name' => __( 'Customizer setup', 'toolset-advanced-export' ),
+                'location' => __( 'Appearance &rarr; Customize', 'toolset-advanced-export' ),
+	            'url' => admin_url( 'customize.php' )
+            ],
+            self::APPEARANCE_MENU => [
+                'section_name' => __( 'Menu setup', 'toolset-advanced-export' ),
+                'location' => __( 'Appearance &rarr; Menus', 'toolset-advanced-export' ),
+	            'url' => admin_url( 'nav-menus.php' )
+            ],
+            self::APPEARANCE_WIDGETS => [
+                'section_name' => __( 'Widget setup', 'toolset-advanced-export' ),
+                'location' => __( 'Appearance &rarr; Widgets', 'toolset-advanced-export' ),
+	            'url' => admin_url( 'widgets.php' )
+            ],
         ];
+
+	    $labels = array_reduce(
+	    	array_keys( $label_descriptions ),
+		    function( $labels, $label_key ) use( $label_descriptions ) {
+	    		$label_description = $label_descriptions[ $label_key ];
+
+		        $labels[ $label_key ] = sprintf(
+		        	'%s (<em><a href="%s" target="_blank">%s</a></em>)',
+			        $label_description['section_name'],
+			        esc_url_raw( $label_description['url'] ),
+			        $label_description['location']
+		        );
+
+		        return $labels;
+	        }, []
+	    );
+
+	    return $labels;
     }
 
 

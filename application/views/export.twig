@@ -36,8 +36,8 @@
         </span>
 
         <button
-                type="submit" name="toolset_extra_export" class="button-primary form-submit submit"
-                data-bind="click: onExportClick, enable: ( isExportPossible() && ! isExportInProgress() )"
+                type="submit" name="toolset_extra_export" class="button button-primary form-submit submit"
+                data-bind="click: onExportClick, enablePrimary: ( isExportPossible() && ! isExportInProgress() )"
         >{{ __( 'Export' ) }}</button>
 
         <span class="spinner" data-bind="style: { visibility: (isExportInProgress() ? 'visible' : 'hidden') }"></span>
