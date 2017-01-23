@@ -39,11 +39,17 @@ class Import_Extra_Wordpress_Data_Zip implements Api_Handler_Interface {
 			) );
 		}
 
-		$import_json = file_get_contents( sprintf( 'zip://%s#settings.json', $zip_path ) );
+		$import_json = @file_get_contents( sprintf( 'zip://%s#settings.json', $zip_path ) );
 		if( false === $import_json ) {
+
+			$error = error_get_last();
+			$error = explode( ': ', $error['message'] );
+			$error = trim( $error[2] );
+
 			return new \Toolset_Result( false, sprintf(
-				__( 'Cannot read import file "%s".', 'toolset-advanced-export' ),
-				$zip_path
+				__( 'Cannot read import file "%s" (%s).', 'toolset-advanced-export' ),
+				$zip_path,
+				$error
 			) );
 		}
 
