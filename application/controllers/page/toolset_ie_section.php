@@ -67,7 +67,9 @@ class Toolset_Ie_Section extends Page_Import_Export {
         $sections[ self::TAB_SLUG ] = [
             'slug' => self::TAB_SLUG,
             'title' => __( 'Theme (TBT)', 'toolset-advanced-export' ),
-            'icon' => '<i class="icon-toolset-logo ont-icon-16"></i>', // todo add specific icon
+
+	        // ontego-resources icon
+            'icon' => '<i class="icon-toolset-export ont-icon-16"></i>',
             'items' => $tab_items
         ];
 
