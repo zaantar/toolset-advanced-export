@@ -3,7 +3,7 @@
 Plugin Name: Toolset Advanced Export
 Plugin URI: https://github.com/zaantar/toolset-advanced-export
 Description: Export and import additional site settings and content that is not included in the standard WordPress export file.
-Version: 1.0-dev
+Version: 1.0
 Author: OnTheGoSystems
 Author URI: http://toolset.com
 Text Domain: toolset-advanced-export
