@@ -42,7 +42,7 @@ abstract class Page_Import_Export {
         $instance->enqueue_scripts();
 	}
 
-
+	/** @noinspection PhpDocMissingThrowsInspection */
 	/**
 	 * Render the page's markup.
 	 *
@@ -53,12 +53,14 @@ abstract class Page_Import_Export {
 
 		$context = $this->build_twig_context();
 
+		/** @noinspection PhpUnhandledExceptionInspection */
 		$twig = $this->get_twig_environment();
 
 		if( ! in_array( $what, ['import', 'export', 'both' ] ) ) {
 			$what = 'both';
 		}
 
+		/** @noinspection PhpUnhandledExceptionInspection */
 		$output = $twig->render( "{$what}.twig", $context );
 
 		echo $output;
@@ -112,7 +114,8 @@ abstract class Page_Import_Export {
 	/**
 	 * Get a configured Twig environment.
 	 *
-	 * @return \Twig_Environment
+	 * @return \ToolsetAdvancedExport\Twig\Environment
+	 * @throws e\Twig\Error\LoaderError
 	 */
 	protected function get_twig_environment() {
 
@@ -120,20 +123,15 @@ abstract class Page_Import_Export {
 
 		if( null == $twig ) {
 
-			// If there is no Twig instance loaded yet, use the one packed with the plugin.
-			if ( ! class_exists( '\Twig_Environment' ) ) {
-				e\Customized_Twig_Autoloader::register( false );
-			}
-
-			$loader = new \Twig_Loader_Filesystem();
+			$loader = new \ToolsetAdvancedExport\Twig\Loader\FilesystemLoader;
 			$loader->addPath( TOOLSET_ADVANCED_EXPORT_ABSPATH . '/application/views/' );
 
-			$twig = new \Twig_Environment( $loader );
+			$twig = new  \ToolsetAdvancedExport\Twig\Environment( $loader );
 
 			// Twig extensions
 			//
 			//
-			$twig->addFunction( '__', new \Twig_SimpleFunction( '__', function( $text, $domain = 'toolset-advanced-export' ) {
+			$twig->addFunction( '__', new  \ToolsetAdvancedExport\Twig\TwigFunction( '__', function( $text, $domain = 'toolset-advanced-export' ) {
 				return __( $text, $domain );
 			} ) );
 		}
