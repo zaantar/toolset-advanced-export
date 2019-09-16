@@ -212,8 +212,8 @@ class Menu implements IMigration_Handler {
         // Process all menus and collect the ID mapping.
         $menu_id_map = array_reduce( $menus, function( $menu_id_map, $menu_data ) use( $results ) {
 
-            $menu_name = toolset_getarr( $menu_data, 'name' );
-            $old_menu_id = toolset_getarr( $menu_data, 'id' );
+            $menu_name = wp_kses( toolset_getarr( $menu_data, 'name' ), false );
+            $old_menu_id = (int) toolset_getarr( $menu_data, 'id' );
 
 	        $unique_menu_slug = $this->get_unique_menu_slug( sanitize_title( $menu_name ) );
 	        $term_creation_result = wp_insert_term( $menu_name, 'nav_menu', [ 'slug' => $unique_menu_slug ] );
