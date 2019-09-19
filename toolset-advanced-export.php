@@ -15,14 +15,14 @@ GitHub Plugin URI: zaantar/toolset-advanced-export
 
 
 function toolset_advanced_export_is_environment_compatible() {
-	return ( PHP_VERSION_ID >= 50400 );
+	return ( PHP_VERSION_ID >= 50600 );
 }
 
 
 function toolset_advanced_export_low_php_version_notice() {
 	?>
 	<div class="notice notice-error is-dismissible">
-		<p><?php _e( 'Toolset Advanced Export requires PHP 5.4 or higher.', 'toolset-advanced-export' ); ?></p>
+		<p><?php _e( 'Toolset Advanced Export requires PHP 5.6 or higher.', 'toolset-advanced-export' ); ?></p>
 	</div>
 	<?php
 }

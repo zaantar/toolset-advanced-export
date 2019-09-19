@@ -1,8 +1,11 @@
 {
-  "require": {
-    "twig/twig" : "~1.0"
-  },
   "require-dev": {
     "10up/wp_mock": "dev-master"
+  },
+  "autoload": {
+    "classmap": [
+      "application/",
+      "lib/"
+    ]
   }
 }
