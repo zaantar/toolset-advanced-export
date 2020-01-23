@@ -27,11 +27,22 @@ final class Main {
 
 	private function __construct() {
 
-
 		require_once TOOLSET_ADVANCED_EXPORT_ABSPATH . '/application/functions.php';
 
 		// Initialize the autoloader.
 		require_once dirname( __FILE__ ) . '/../../vendor/autoload.php';
+
+		// Early initialization of the customizer if we know we're going to need it.
+		// Explained in pre_initialize_in_ajax().
+		\add_action( 'setup_theme', function() {
+			if( array_key_exists( 'action', $_POST )
+				&& substr( $_POST['action'], 0, strlen( 'toolset_advanced_export_' ) ) === 'toolset_advanced_export_'
+				&& wp_doing_ajax()
+			) {
+				CustomizerInit::get_instance()->pre_initialize_in_ajax();
+			}
+		} );
+
 
 		// Priority is set to 11 because Toolset Common is initialized at 10.
 		\add_action( 'after_setup_theme', function() {

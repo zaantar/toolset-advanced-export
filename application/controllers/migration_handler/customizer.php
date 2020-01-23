@@ -226,52 +226,7 @@ class Customizer implements IMigration_Handler {
      * @since 1.0
      */
     private function get_customize_manager() {
-
-        /**
-         * toolset_export_get_customize_manager
-         *
-         * Allow for hijacking the process of obtaining a \WP_Customize_Manager instance and implementing
-         * a custom hack.
-         *
-         * @param null
-         * @return \WP_Customize_Manager
-         * @since 1.0
-         */
-        $custom_customize_manager = apply_filters( 'toolset_export_get_customize_manager', null );
-        if( $custom_customize_manager instanceof \WP_Customize_Manager ) {
-            return $custom_customize_manager;
-        }
-
-        /** @var \WP_Customize_Manager $wp_customize */
-        global $wp_customize;
-
-        // The object is available only on-demand, mainly on the Customize page after plugins_loaded (and then passed
-        // by the customize_register action). But at this point, we can be in the middle of a WP-CLI command or an AJAX
-        // request. We have no other choice than hacking WordPress into loading it.
-        if( null == $wp_customize ) {
-
-            $_REQUEST['wp_customize'] = 'on';
-            _wp_customize_include();
-
-            // Populate customizer options.
-            //
-            // Some themes (including twentyseventeen) hook into customize_register with the default priority 10
-            // but assume that \WP_Customize_Manager::register_controls() has already run. This is exactly what happens
-            // on the Customize page but here, we have a race condition. Thus we have to re-register the relevant hook
-            // with a lower priority.
-            remove_action( 'customize_register', array( $wp_customize, 'register_controls' ) );
-            add_action( 'customize_register', array( $wp_customize, 'register_controls' ), -1 );
-
-            // This is now redundant (we don't expect this to be happening on the actual Customizer page, it would
-            // probably break things there).
-            remove_action( 'customize_register', array( $wp_customize, 'schedule_customize_register' ), 1 );
-            remove_action( 'wp_loaded',   array( $wp_customize, 'wp_loaded' ) );
-
-            // Now we can finally populate the customizer options.
-            do_action( 'customize_register', $wp_customize );
-        }
-
-        return $wp_customize;
+    	return e\CustomizerInit::get_instance()->get_customize_manager();
     }
 
 
